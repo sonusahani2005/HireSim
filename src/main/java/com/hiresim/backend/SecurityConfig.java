@@ -2,6 +2,7 @@ package com.hiresim.backend;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -20,6 +21,11 @@ public class SecurityConfig {
             .cors(cors -> {})
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
+
+                // Allow CORS preflight requests
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                // Public endpoints
                 .requestMatchers(
                     "/",
                     "/error",
@@ -28,6 +34,8 @@ public class SecurityConfig {
                     "/questions/**",
                     "/coding/**"
                 ).permitAll()
+
+                // Everything else requires authentication
                 .anyRequest().authenticated()
             );
 
@@ -40,10 +48,10 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of(
-    "http://localhost:5500",
-    "http://127.0.0.1:5500",
-    "https://hiresim-frontend.onrender.com"
-));
+            "http://localhost:5500",
+            "http://127.0.0.1:5500",
+            "https://hiresim-frontend.onrender.com"
+        ));
 
         configuration.setAllowedMethods(List.of(
             "GET",
@@ -54,6 +62,8 @@ public class SecurityConfig {
         ));
 
         configuration.setAllowedHeaders(List.of("*"));
+
+        configuration.setAllowCredentials(false);
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();

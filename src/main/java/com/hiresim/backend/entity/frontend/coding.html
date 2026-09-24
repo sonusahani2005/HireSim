@@ -429,7 +429,7 @@
     try {
 
         const response =
-            await fetch("http://localhost:8080/coding/questions");
+            await fetch("https://hiresim.onrender.com/coding/questions");
 
         if (!response.ok) {
             throw new Error("Unable to load coding questions");
@@ -1869,7 +1869,7 @@ int main() {
 
             const response =
                 await fetch(
-                    `http://localhost:8080/coding/testcases/${question.id}`
+                    `https://hiresim.onrender.com/coding/testcases/${question.id}`
                 );
 
 
@@ -2236,7 +2236,7 @@ function saveCode() {
 
     try {
 
-        const response = await fetch("http://localhost:8080/coding/run", {
+        const response = await fetch("https://hiresim.onrender.com/coding/run", {
 
             method: "POST",
 
@@ -2324,7 +2324,7 @@ function saveCode() {
 
         const response =
             await fetch(
-                "http://localhost:8080/coding/run",
+                "https://hiresim.onrender.com/coding/run",
                 {
                     method: "POST",
 

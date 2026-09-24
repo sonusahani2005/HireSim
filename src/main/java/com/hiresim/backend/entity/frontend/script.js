@@ -7,6 +7,9 @@ const registerForm = document.getElementById("registerForm");
 const loginMessage = document.getElementById("loginMessage");
 const registerMessage = document.getElementById("registerMessage");
 
+// Live Backend URL
+const API_BASE_URL = "https://hiresim.onrender.com";
+
 
 // Login / Register tab switch
 
@@ -20,6 +23,8 @@ loginTab.addEventListener("click", function () {
 
 });
 
+
+// Register tab
 
 registerTab.addEventListener("click", function () {
 
@@ -44,38 +49,41 @@ registerForm.addEventListener("submit", async function (event) {
 
     try {
 
-        const response = await fetch("http://localhost:8080/auth/register", {
+        const response = await fetch(
+            `${API_BASE_URL}/auth/register`,
+            {
+                method: "POST",
 
-            method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
 
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-                name: name,
-                email: email,
-                password: password
-            })
-
-        });
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    password: password
+                })
+            }
+        );
 
         if (response.ok) {
 
-            registerMessage.textContent = "Account created successfully!";
+            registerMessage.textContent =
+                "Account created successfully!";
 
             registerForm.reset();
 
         } else {
 
-            registerMessage.textContent = "Registration failed.";
+            registerMessage.textContent =
+                "Registration failed.";
 
         }
 
     } catch (error) {
 
         registerMessage.textContent =
-            "Backend is not running.";
+            "Backend is not reachable.";
 
     }
 
@@ -93,34 +101,39 @@ loginForm.addEventListener("submit", async function (event) {
 
     try {
 
-        const response = await fetch("http://localhost:8080/auth/login", {
+        const response = await fetch(
+            `${API_BASE_URL}/auth/login`,
+            {
+                method: "POST",
 
-            method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
 
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-                email: email,
-                password: password
-            })
-
-        });
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            }
+        );
 
         const result = await response.text();
 
-if (result === "Login successful") {
-    window.location.href = "dashboard.html";
-} else {
-    loginMessage.textContent = result;
-}
+        if (result === "Login successful") {
+
+            window.location.href = "dashboard.html";
+
+        } else {
+
+            loginMessage.textContent = result;
+
+        }
 
     } catch (error) {
 
         loginMessage.textContent =
-            "Backend is not running.";
+            "Backend is not reachable.";
 
     }
 
-});
+});s

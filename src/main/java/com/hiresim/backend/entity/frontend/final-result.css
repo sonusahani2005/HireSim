@@ -1,0 +1,389 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f3ff;
+    color: #222;
+    min-height: 100vh;
+}
+
+
+/* =========================
+   TOP BAR
+========================= */
+
+.top-bar {
+    height: 70px;
+    background: linear-gradient(135deg, #6c63ff, #574fd6);
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 45px;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.round-name {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.result-container {
+    width: 100%;
+    min-height: calc(100vh - 70px);
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding: 45px 20px;
+}
+
+
+/* =========================
+   RESULT CARD
+========================= */
+
+.result-card {
+    width: 100%;
+    max-width: 900px;
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 40px;
+
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.10);
+
+    text-align: center;
+}
+
+
+/* =========================
+   SUCCESS ICON
+========================= */
+
+.success-icon {
+    width: 75px;
+    height: 75px;
+
+    margin: 0 auto 18px;
+
+    border-radius: 50%;
+
+    background: #e8f8ee;
+    color: #20a05a;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.result-card h1 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #777;
+    font-size: 15px;
+    margin-bottom: 30px;
+}
+
+
+/* =========================
+   OVERALL SCORE
+========================= */
+
+.overall-score {
+    background: linear-gradient(135deg, #f1efff, #faf9ff);
+
+    border: 1px solid #e3e0ff;
+
+    border-radius: 16px;
+
+    padding: 25px;
+
+    margin-bottom: 30px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.score-label {
+    color: #666;
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+#overallScore {
+    font-size: 54px;
+    font-weight: 800;
+    color: #6c63ff;
+}
+
+#performanceText {
+    margin-top: 5px;
+    font-size: 15px;
+    color: #555;
+}
+
+
+/* =========================
+   ROUND RESULTS
+========================= */
+
+.round-results {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 30px;
+}
+
+.round-card {
+    border: 1px solid #e5e5e5;
+
+    border-radius: 15px;
+
+    padding: 22px 15px;
+
+    background: #fff;
+
+    transition: 0.25s ease;
+}
+
+.round-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.round-icon {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.round-card h3 {
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.round-card p {
+    font-size: 22px;
+    font-weight: 700;
+    color: #6c63ff;
+}
+
+
+/* =========================
+   PERFORMANCE SECTION
+========================= */
+
+.performance-section {
+    text-align: left;
+
+    border-top: 1px solid #eee;
+
+    padding-top: 25px;
+
+    margin-bottom: 25px;
+}
+
+.performance-section h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.performance-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 13px 15px;
+
+    border-bottom: 1px solid #eee;
+
+    color: #555;
+}
+
+.performance-row strong {
+    color: #222;
+}
+
+
+/* =========================
+   RESULT MESSAGE
+========================= */
+
+.result-message {
+    background: #f8f8ff;
+
+    border-radius: 14px;
+
+    padding: 22px;
+
+    margin-bottom: 30px;
+}
+
+.result-message h2 {
+    font-size: 21px;
+    color: #6c63ff;
+
+    margin-bottom: 8px;
+}
+
+.result-message p {
+    color: #666;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.action-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+}
+
+.action-buttons button {
+    border: none;
+
+    padding: 13px 25px;
+
+    border-radius: 10px;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+
+/* Dashboard */
+
+.dashboard-button {
+    background: #f1f3f5;
+
+    color: #343a40;
+
+    border: 1px solid #d6d9dc !important;
+}
+
+.dashboard-button:hover {
+    background: #e2e6ea;
+
+    transform: translateY(-2px);
+}
+
+
+/* Practice */
+
+.practice-button {
+    background: #6c63ff;
+
+    color: white;
+
+    box-shadow:
+        0 5px 12px rgba(108, 99, 255, 0.25);
+}
+
+.practice-button:hover {
+    background: #574fd6;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 16px rgba(108, 99, 255, 0.35);
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .top-bar {
+        padding: 0 20px;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .round-name {
+        font-size: 13px;
+    }
+
+    .result-container {
+        padding: 25px 12px;
+    }
+
+    .result-card {
+        padding: 25px 18px;
+    }
+
+    .result-card h1 {
+        font-size: 25px;
+    }
+
+    #overallScore {
+        font-size: 45px;
+    }
+
+    .round-results {
+        grid-template-columns: 1fr;
+    }
+
+    .performance-row {
+        font-size: 14px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .action-buttons button {
+        width: 100%;
+    }
+}

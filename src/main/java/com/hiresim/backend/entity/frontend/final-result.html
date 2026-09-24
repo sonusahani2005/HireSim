@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>HireSim - Final Result</title>
+
+    <link rel="stylesheet"
+          href="final-result.css">
+
+</head>
+
+<body>
+
+
+<header class="top-bar">
+
+    <div class="logo">
+        HireSim
+    </div>
+
+    <div class="round-name">
+        Final Interview Result
+    </div>
+
+</header>
+
+
+
+<main class="result-container">
+
+    <div class="result-card">
+
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+
+        <h1>
+            Interview Completed!
+        </h1>
+
+
+        <p class="subtitle">
+            Here is your complete HireSim performance summary.
+        </p>
+
+
+
+        <!-- =========================
+             OVERALL SCORE
+        ========================= -->
+
+        <div class="overall-score">
+
+            <span class="score-label">
+                Overall Score
+            </span>
+
+            <span id="overallScore">
+                0%
+            </span>
+
+            <span id="performanceText">
+                Keep practicing and improving!
+            </span>
+
+        </div>
+
+
+
+        <!-- =========================
+             ROUND RESULTS
+        ========================= -->
+
+        <div class="round-results">
+
+
+            <!-- APTITUDE -->
+
+            <div class="round-card">
+
+                <div class="round-icon">
+                    🧮
+                </div>
+
+                <h3>
+                    Aptitude
+                </h3>
+
+                <p>
+
+                    <span id="aptitudeScore">
+                        0
+                    </span>
+
+                    /
+
+                    <span id="aptitudeTotal">
+                        25
+                    </span>
+
+                </p>
+
+            </div>
+
+
+
+            <!-- TECHNICAL -->
+
+            <div class="round-card">
+
+                <div class="round-icon">
+                    💻
+                </div>
+
+                <h3>
+                    Technical
+                </h3>
+
+                <p>
+
+                    <span id="technicalScore">
+                        0
+                    </span>
+
+                    /
+
+                    <span id="technicalTotal">
+                        25
+                    </span>
+
+                </p>
+
+            </div>
+
+
+
+            <!-- CODING -->
+
+            <div class="round-card">
+
+                <div class="round-icon">
+                    👨‍💻
+                </div>
+
+                <h3>
+                    Coding
+                </h3>
+
+               <p>
+
+    <span id="codingScore">
+        0
+    </span>
+
+</p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =========================
+             PERFORMANCE SUMMARY
+        ========================= -->
+
+        <div class="performance-section">
+
+            <h2>
+                Performance Summary
+            </h2>
+
+
+            <div class="performance-row">
+
+                <span>
+                    Total Questions
+                </span>
+
+                <strong id="totalQuestions">
+                    55
+                </strong>
+
+            </div>
+
+
+            <div class="performance-row">
+
+                <span>
+                    Attempted
+                </span>
+
+                <strong id="attemptedQuestions">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="performance-row">
+
+                <span>
+                    Not Attempted
+                </span>
+
+                <strong id="notAttemptedQuestions">
+                    55
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             MESSAGE
+        ========================= -->
+
+        <div class="result-message">
+
+            <h2 id="resultTitle">
+                Keep Practicing!
+            </h2>
+
+            <p id="resultDescription">
+                Regular practice will help you improve your
+                technical and coding skills.
+            </p>
+
+        </div>
+
+
+
+        <!-- =========================
+             BUTTONS
+        ========================= -->
+
+        <div class="action-buttons">
+
+
+            <button
+                class="dashboard-button"
+                onclick="goToDashboard()">
+
+                🏠 Dashboard
+
+            </button>
+
+
+            <button
+                class="practice-button"
+                onclick="practiceAgain()">
+
+                🔄 Practice Again
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+
+<script>
+
+
+// =====================================
+// GET APTITUDE SCORE
+// =====================================
+
+const aptitudeScore =
+    Number(
+        localStorage.getItem("aptitudeScore")
+    ) || 0;
+
+
+const aptitudeTotal =
+    Number(
+        localStorage.getItem("aptitudeTotal")
+    ) || 25;
+
+
+
+// =====================================
+// GET TECHNICAL SCORE
+// =====================================
+
+const technicalScore =
+    Number(
+        localStorage.getItem("technicalScore")
+    ) || 0;
+
+
+const technicalTotal =
+    Number(
+        localStorage.getItem("technicalTotal")
+    ) || 25;
+
+
+
+// =====================================
+// GET CODING SCORE
+// =====================================
+
+// codingScore is a PERCENTAGE.
+// Example: 100 means 100%.
+
+const codingPercentage =
+    Number(
+        localStorage.getItem("codingScore")
+    ) || 0;
+
+
+const codingTotal =
+    Number(
+        localStorage.getItem("codingTotal")
+    ) || 5;
+
+
+
+// =====================================
+// CALCULATE CODING CORRECT ANSWERS
+// =====================================
+
+// Convert coding percentage back into
+// actual number of correct questions.
+
+const codingCorrect =
+    Math.round(
+        (codingPercentage / 100) * codingTotal
+    );
+
+
+
+// =====================================
+// TOTAL QUESTIONS
+// =====================================
+
+const totalQuestions =
+    aptitudeTotal +
+    technicalTotal +
+    codingTotal;
+
+
+
+// =====================================
+// TOTAL CORRECT ANSWERS
+// =====================================
+
+const totalCorrect =
+    aptitudeScore +
+    technicalScore +
+    codingCorrect;
+
+
+
+// =====================================
+// OVERALL PERCENTAGE
+// =====================================
+
+const percentage =
+    totalQuestions > 0
+        ? Math.round(
+            (totalCorrect / totalQuestions) * 100
+        )
+        : 0;
+
+
+
+// =====================================
+// ATTEMPTED QUESTIONS
+// =====================================
+
+const aptitudeCorrect =
+    Number(
+        localStorage.getItem("aptitudeCorrect")
+    ) || aptitudeScore;
+
+
+const aptitudeWrong =
+    Number(
+        localStorage.getItem("aptitudeWrong")
+    ) || 0;
+
+
+const aptitudeNotAttempted =
+    Number(
+        localStorage.getItem("aptitudeNotAttempted")
+    ) || 0;
+
+
+
+const technicalCorrect =
+    Number(
+        localStorage.getItem("technicalCorrect")
+    ) || technicalScore;
+
+
+const technicalWrong =
+    Number(
+        localStorage.getItem("technicalWrong")
+    ) || 0;
+
+
+const technicalNotAttempted =
+    Number(
+        localStorage.getItem("technicalNotAttempted")
+    ) || 0;
+
+
+
+const codingAttempted =
+    Number(
+        localStorage.getItem("codingAttempted")
+    ) || 0;
+
+
+const codingNotAttempted =
+    Number(
+        localStorage.getItem("codingNotAttempted")
+    ) || 0;
+
+
+
+// =====================================
+// TOTAL ATTEMPTED
+// =====================================
+
+const attemptedQuestions =
+    (aptitudeCorrect + aptitudeWrong) +
+    (technicalCorrect + technicalWrong) +
+    codingAttempted;
+
+
+
+// =====================================
+// TOTAL NOT ATTEMPTED
+// =====================================
+
+const notAttemptedQuestions =
+    aptitudeNotAttempted +
+    technicalNotAttempted +
+    codingNotAttempted;
+
+
+
+// =====================================
+// DISPLAY OVERALL SCORE
+// =====================================
+
+document.getElementById(
+    "overallScore"
+).textContent =
+    percentage + "%";
+
+
+
+// =====================================
+// DISPLAY ROUND SCORES
+// =====================================
+
+document.getElementById(
+    "aptitudeScore"
+).textContent =
+    aptitudeScore;
+
+
+document.getElementById(
+    "aptitudeTotal"
+).textContent =
+    aptitudeTotal;
+
+
+
+document.getElementById(
+    "technicalScore"
+).textContent =
+    technicalScore;
+
+
+document.getElementById(
+    "technicalTotal"
+).textContent =
+    technicalTotal;
+
+
+
+document.getElementById(
+    "codingScore"
+).textContent =
+    codingPercentage;
+
+
+
+// =====================================
+// DISPLAY SUMMARY
+// =====================================
+
+document.getElementById(
+    "totalQuestions"
+).textContent =
+    totalQuestions;
+
+
+document.getElementById(
+    "attemptedQuestions"
+).textContent =
+    attemptedQuestions;
+
+
+document.getElementById(
+    "notAttemptedQuestions"
+).textContent =
+    notAttemptedQuestions;
+
+
+
+// =====================================
+// PERFORMANCE MESSAGE
+// =====================================
+
+const performanceText =
+    document.getElementById(
+        "performanceText"
+    );
+
+
+const resultTitle =
+    document.getElementById(
+        "resultTitle"
+    );
+
+
+const resultDescription =
+    document.getElementById(
+        "resultDescription"
+    );
+
+
+
+if (percentage >= 80) {
+
+    performanceText.textContent =
+        "Excellent performance!";
+
+    resultTitle.textContent =
+        "Excellent Performance!";
+
+    resultDescription.textContent =
+        "You demonstrated strong aptitude, technical and coding skills.";
+
+}
+
+
+else if (percentage >= 60) {
+
+    performanceText.textContent =
+        "Good performance!";
+
+    resultTitle.textContent =
+        "Good Job!";
+
+    resultDescription.textContent =
+        "You have a good foundation. Keep practicing to improve further.";
+
+}
+
+
+else if (percentage >= 40) {
+
+    performanceText.textContent =
+        "Good starting point!";
+
+    resultTitle.textContent =
+        "Keep Improving!";
+
+    resultDescription.textContent =
+        "Focus on your weaker areas and practice regularly.";
+
+}
+
+
+else {
+
+    performanceText.textContent =
+        "More practice recommended.";
+
+    resultTitle.textContent =
+        "Keep Practicing!";
+
+    resultDescription.textContent =
+        "Regular practice will help strengthen your fundamentals.";
+
+}
+// =====================================
+// SAVE INTERVIEW HISTORY
+// =====================================
+
+function saveInterviewHistory() {
+
+    const history =
+        JSON.parse(
+            localStorage.getItem("interviewHistory")
+        ) || [];
+
+    const interview = {
+
+        company:
+            localStorage.getItem("selectedCompany")
+            || "Not selected",
+
+        role:
+            localStorage.getItem("selectedRole")
+            || "Not selected",
+
+        mode:
+            localStorage.getItem("selectedMode")
+            || "Not selected",
+
+        overallScore:
+            percentage,
+
+        aptitudeScore:
+            aptitudeScore,
+
+        aptitudeTotal:
+            aptitudeTotal,
+
+        technicalScore:
+            technicalScore,
+
+        technicalTotal:
+            technicalTotal,
+
+        codingScore:
+            codingPercentage,
+
+        totalQuestions:
+            totalQuestions,
+
+        attempted:
+            attemptedQuestions,
+
+        notAttempted:
+            notAttemptedQuestions,
+
+        date:
+            new Date().toLocaleString()
+
+    };
+
+
+    history.unshift(interview);
+
+
+    /*
+     * Keep only the latest 10 interviews.
+     */
+
+    if (history.length > 10) {
+
+        history.splice(10);
+
+    }
+
+
+    localStorage.setItem(
+        "interviewHistory",
+        JSON.stringify(history)
+    );
+
+}
+
+
+// Save current interview result
+
+saveInterviewHistory();
+
+
+// =====================================
+// DASHBOARD
+// =====================================
+
+function goToDashboard() {
+
+    window.location.href =
+        "dashboard.html";
+
+}
+
+
+
+// =====================================
+// PRACTICE AGAIN
+// =====================================
+
+function practiceAgain() {
+
+
+    localStorage.removeItem(
+        "aptitudeScore"
+    );
+
+    localStorage.removeItem(
+        "aptitudeTotal"
+    );
+
+    localStorage.removeItem(
+        "aptitudeCorrect"
+    );
+
+    localStorage.removeItem(
+        "aptitudeWrong"
+    );
+
+    localStorage.removeItem(
+        "aptitudeNotAttempted"
+    );
+
+
+
+    localStorage.removeItem(
+        "technicalScore"
+    );
+
+    localStorage.removeItem(
+        "technicalTotal"
+    );
+
+    localStorage.removeItem(
+        "technicalCorrect"
+    );
+
+    localStorage.removeItem(
+        "technicalWrong"
+    );
+
+    localStorage.removeItem(
+        "technicalNotAttempted"
+    );
+
+
+
+    localStorage.removeItem(
+        "codingScore"
+    );
+
+    localStorage.removeItem(
+        "codingTotal"
+    );
+
+    localStorage.removeItem(
+        "codingAttempted"
+    );
+
+    localStorage.removeItem(
+        "codingNotAttempted"
+    );
+
+    localStorage.removeItem(
+        "codingCompleted"
+    );
+
+
+    window.location.href =
+        "dashboard.html";
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

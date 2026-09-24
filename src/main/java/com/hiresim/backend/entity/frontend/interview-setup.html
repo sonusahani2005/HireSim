@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>HireSim - Interview Setup</title>
+
+    <link rel="stylesheet"
+        href="interview-setup.css">
+
+</head>
+
+
+<body>
+
+
+    <div class="setup-page">
+
+
+        <!-- Header -->
+
+        <div class="header">
+
+            <h1>
+                Interview Setup
+            </h1>
+
+            <p>
+                Review your interview details before starting
+            </p>
+
+        </div>
+
+
+
+        <!-- Setup Card -->
+
+        <div class="setup-card">
+
+
+            <!-- Candidate -->
+
+            <div class="detail">
+
+                <span>
+                    👤 Candidate
+                </span>
+
+                <strong id="candidateName">
+                    Interview Candidate
+                </strong>
+
+            </div>
+
+
+
+            <!-- Company -->
+
+            <div class="detail">
+
+                <span>
+                    🏢 Company
+                </span>
+
+                <strong id="companyName">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+
+            <!-- Job Role -->
+
+            <div class="detail">
+
+                <span>
+                    💼 Job Role
+                </span>
+
+                <strong id="roleName">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+
+            <!-- Interview Mode -->
+
+            <div class="detail">
+
+                <span>
+                    🎯 Interview Mode
+                </span>
+
+                <strong id="modeName">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+
+            <!-- Interview Rounds -->
+
+            <div class="rounds">
+
+                <h2>
+                    Interview Rounds
+                </h2>
+
+
+                <div class="round">
+
+                    <span>
+                        01
+                    </span>
+
+                    <p>
+                        Introduction Round
+                    </p>
+
+                </div>
+
+
+                <div class="round">
+
+                    <span>
+                        02
+                    </span>
+
+                    <p>
+                        Aptitude Round
+                    </p>
+
+                </div>
+
+
+                <div class="round">
+
+                    <span>
+                        03
+                    </span>
+
+                    <p>
+                        Technical Round
+                    </p>
+
+                </div>
+
+
+                <div class="round">
+
+                    <span>
+                        04
+                    </span>
+
+                    <p>
+                        Coding Round
+                    </p>
+
+                </div>
+
+
+                <div class="round">
+
+                    <span>
+                        05
+                    </span>
+
+                    <p>
+                        HR Round
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Duration -->
+
+            <div class="duration">
+
+                <span>
+                    ⏱️ Estimated Duration
+                </span>
+
+                <strong>
+                    45 - 60 Minutes
+                </strong>
+
+            </div>
+
+
+
+            <!-- Start -->
+
+            <button onclick="startInterview()">
+
+                Start Interview 🚀
+
+            </button>
+
+
+            <p id="message"></p>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <script>
+
+
+        /*
+         * Get information saved
+         * from previous pages.
+         */
+
+        const company =
+            localStorage.getItem("selectedCompany");
+
+        const role =
+            localStorage.getItem("selectedRole");
+
+        const mode =
+            localStorage.getItem("selectedMode");
+
+
+
+        /*
+         * Display company.
+         */
+
+        if (company) {
+
+            document.getElementById("companyName")
+                .textContent = company;
+
+        }
+        else {
+
+            document.getElementById("companyName")
+                .textContent = "Not selected";
+
+        }
+
+
+
+        /*
+         * Display job role.
+         */
+
+        if (role) {
+
+            document.getElementById("roleName")
+                .textContent = role;
+
+        }
+        else {
+
+            document.getElementById("roleName")
+                .textContent = "Not selected";
+
+        }
+
+
+
+        /*
+         * Display interview mode.
+         */
+
+        if (mode) {
+
+            document.getElementById("modeName")
+                .textContent = mode;
+
+        }
+        else {
+
+            document.getElementById("modeName")
+                .textContent = "Not selected";
+
+        }
+
+
+
+        /*
+         * Start Interview
+         */
+
+        function startInterview() {
+
+
+            const message =
+                document.getElementById("message");
+
+
+            /*
+             * Check required selections.
+             */
+
+            if (!company ||
+                !role ||
+                !mode) {
+
+                message.textContent =
+                    "Please complete interview setup first.";
+
+                message.className =
+                    "error";
+
+                return;
+
+            }
+
+
+
+            /*
+             * Show starting message.
+             */
+
+            message.textContent =
+                "Starting interview...";
+
+            message.className =
+                "success";
+
+
+
+            /*
+             * Open Introduction Round.
+             */
+
+            setTimeout(function () {
+
+                window.location.href =
+                    "introduction.html";
+
+            }, 700);
+
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

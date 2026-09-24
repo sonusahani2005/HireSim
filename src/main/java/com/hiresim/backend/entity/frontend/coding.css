@@ -1,0 +1,629 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f3ff;
+    color: #222;
+    min-height: 100vh;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.top-bar {
+    height: 70px;
+    background: #6c63ff;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 40px;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 700;
+}
+
+.round-name {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.container {
+    width: 94%;
+    max-width: 1450px;
+    margin: 25px auto;
+}
+
+
+/* =========================
+   TOP INFO
+========================= */
+
+.top-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#progress {
+    font-size: 17px;
+    font-weight: 600;
+    color: #444;
+}
+
+.timer-box {
+    background: white;
+    padding: 11px 20px;
+    border-radius: 10px;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+
+    font-size: 16px;
+}
+
+.timer-box strong {
+    color: #e63946;
+    font-size: 18px;
+}
+
+
+/* =========================
+   CODING LAYOUT
+========================= */
+
+.coding-layout {
+    display: grid;
+    grid-template-columns: 42% 58%;
+    gap: 20px;
+    align-items: start;
+}
+
+
+/* =========================
+   PROBLEM SECTION
+========================= */
+
+.problem-section {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+
+    min-height: 600px;
+    max-height: 800px;
+
+    overflow-y: auto;
+}
+
+.problem-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 18px;
+}
+
+.badge {
+    background: #eeecff;
+    color: #6c63ff;
+
+    padding: 7px 14px;
+    border-radius: 20px;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.difficulty {
+    background: #e9f8ef;
+    color: #218838;
+
+    padding: 7px 14px;
+    border-radius: 20px;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+#problemTitle {
+    font-size: 27px;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+#problemDescription {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+
+    margin-bottom: 25px;
+}
+
+.problem-section h3 {
+    font-size: 16px;
+
+    margin-top: 22px;
+    margin-bottom: 9px;
+
+    color: #333;
+}
+
+
+/* =========================
+   CODE BLOCKS
+========================= */
+
+pre {
+    background: #181a20;
+    color: #f5f5f5;
+
+    padding: 15px;
+
+    border-radius: 8px;
+
+    overflow-x: auto;
+
+    line-height: 1.5;
+
+    font-size: 14px;
+}
+
+.example-box {
+    background: #f8f8fb;
+
+    border: 1px solid #e1e1e6;
+
+    border-radius: 10px;
+
+    padding: 15px;
+}
+
+.example-box p {
+    font-size: 14px;
+    font-weight: 600;
+
+    margin-bottom: 7px;
+}
+
+
+/* =========================
+   TEST CASES
+========================= */
+
+.test-cases {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.test-case {
+    border: 1px solid #e0e0e0;
+
+    border-radius: 10px;
+
+    padding: 13px;
+
+    background: #fafafa;
+}
+
+.test-case strong {
+    color: #6c63ff;
+}
+
+.test-case p {
+    font-size: 13px;
+
+    margin-top: 10px;
+    margin-bottom: 5px;
+
+    font-weight: 600;
+}
+
+.test-case pre {
+    font-size: 12px;
+    padding: 10px;
+}
+
+
+/* =========================
+   EDITOR SECTION
+========================= */
+
+.editor-section {
+    background: #20232a;
+
+    border-radius: 15px;
+
+    padding: 18px;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+
+    min-height: 600px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================
+   EDITOR HEADER
+========================= */
+
+.editor-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 12px;
+
+    color: white;
+}
+
+.editor-header span {
+    font-size: 14px;
+    margin-right: 8px;
+}
+
+#language {
+    background: #30343d;
+
+    color: white;
+
+    border: 1px solid #4b505a;
+
+    border-radius: 6px;
+
+    padding: 7px 12px;
+
+    outline: none;
+}
+
+#resetButton {
+    background: #343a40;
+
+    color: white;
+
+    border: 1px solid #555;
+
+    padding: 8px 14px;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+#resetButton:hover {
+    background: #454b52;
+}
+
+
+/* =========================
+   CODE EDITOR
+========================= */
+
+#codeEditor {
+    width: 100%;
+
+    height: 380px;
+    min-height: 380px;
+
+    resize: vertical;
+
+    background: #111318;
+
+    color: #e8e8e8;
+
+    border: 1px solid #3c414a;
+
+    border-radius: 9px;
+
+    padding: 18px;
+
+    font-family: Consolas, "Courier New", monospace;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+
+    outline: none;
+
+    display: block;
+}
+
+#codeEditor:focus {
+    border-color: #6c63ff;
+
+    box-shadow:
+        0 0 0 2px rgba(108, 99, 255, 0.2);
+}
+
+
+/* =========================
+   EDITOR BUTTONS
+========================= */
+
+.editor-buttons {
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 14px;
+
+    width: 100%;
+}
+
+.editor-buttons button {
+    padding: 12px 22px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+    display: inline-block;
+}
+
+#runButton {
+    background: #6c63ff;
+    color: white;
+}
+
+#runButton:hover {
+    background: #574fd6;
+
+    transform: translateY(-1px);
+}
+
+#submitButton {
+    background: #28a745;
+    color: white;
+}
+
+#submitButton:hover {
+    background: #218838;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   OUTPUT
+========================= */
+
+.output-section {
+    margin-top: 15px;
+
+    display: block;
+
+    width: 100%;
+}
+
+.output-title {
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    margin-bottom: 7px;
+}
+
+#output {
+    background: #111318;
+
+    border: 1px solid #3c414a;
+
+    min-height: 65px;
+
+    max-height: 120px;
+
+    overflow-y: auto;
+
+    color: #d7d7d7;
+
+    font-size: 13px;
+
+    width: 100%;
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.navigation-buttons {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-top: 20px;
+
+    width: 100%;
+}
+
+.navigation-buttons button {
+    padding: 12px 24px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+#previousButton {
+    background: white;
+
+    color: #343a40;
+
+    border: 1px solid #d5d5d5;
+}
+
+#previousButton:hover:not(:disabled) {
+    background: #eeeeee;
+
+    transform: translateX(-3px);
+}
+
+#nextButton {
+    background: #6c63ff;
+
+    color: white;
+}
+
+#nextButton:hover:not(:disabled) {
+    background: #574fd6;
+
+    transform: translateX(3px);
+}
+
+.navigation-buttons button:disabled {
+    opacity: 0.45;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background: #eeeeee;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #aaa;
+
+    border-radius: 10px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1000px) {
+
+    .coding-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .problem-section {
+        min-height: auto;
+        max-height: none;
+    }
+
+    .editor-section {
+        min-height: 600px;
+    }
+
+    #codeEditor {
+        height: 380px;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .top-bar {
+        padding: 0 18px;
+        height: 60px;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .round-name {
+        font-size: 14px;
+    }
+
+    .container {
+        width: 94%;
+    }
+
+    .top-info {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 12px;
+    }
+
+    .timer-box {
+        text-align: center;
+    }
+
+    .problem-section {
+        padding: 18px;
+    }
+
+    #problemTitle {
+        font-size: 22px;
+    }
+
+    #codeEditor {
+        height: 350px;
+        min-height: 350px;
+    }
+
+    .editor-buttons {
+        flex-direction: column;
+    }
+
+    .editor-buttons button {
+        width: 100%;
+    }
+
+    .navigation-buttons {
+        gap: 10px;
+    }
+
+    .navigation-buttons button {
+        flex: 1;
+    }
+}

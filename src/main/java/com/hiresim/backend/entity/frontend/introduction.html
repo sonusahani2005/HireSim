@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HireSim - Introduction Round</title>
+
+    <link rel="stylesheet" href="introduction.css">
+</head>
+
+<body>
+
+    <div class="interview-page">
+
+        <!-- Header -->
+
+        <div class="top-bar">
+
+            <div class="logo">
+                HireSim
+            </div>
+
+            <div class="round-info">
+                Introduction Round
+            </div>
+
+        </div>
+
+
+        <!-- Progress -->
+
+        <div class="progress-section">
+
+            <div class="progress-text">
+                <span>Question <strong id="questionNumber">1</strong> of 5</span>
+                <span>Introduction</span>
+            </div>
+
+            <div class="progress-bar">
+                <div id="progress"></div>
+            </div>
+
+        </div>
+
+
+        <!-- Interview Card -->
+
+        <div class="interview-card">
+
+            <div class="interviewer">
+
+                <div class="ai-icon">
+                    🤖
+                </div>
+
+                <div>
+                    <h2>AI Interviewer</h2>
+                    <p>HireSim Interview System</p>
+                </div>
+
+            </div>
+
+
+            <!-- Question -->
+
+            <div class="question-box">
+
+                <span class="question-label">
+                    Interview Question
+                </span>
+
+                <h1 id="question">
+                    Tell me about yourself.
+                </h1>
+
+            </div>
+
+
+            <!-- Answer -->
+
+            <div class="answer-section">
+
+                <label for="answer">
+                    Your Answer
+                </label>
+
+                <textarea
+                    id="answer"
+                    placeholder="Type your answer here..."
+                ></textarea>
+
+                <div class="answer-info">
+                    <span id="wordCount">0 words</span>
+                    <span>Be clear and concise</span>
+                </div>
+
+            </div>
+
+
+            <!-- Submit -->
+
+            <button
+                id="submitButton"
+                onclick="submitAnswer()"
+            >
+                Submit Answer →
+            </button>
+
+
+            <p id="message"></p>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const questions = [
+
+            "Tell me about yourself.",
+
+            "Why did you choose Information Technology as your career?",
+
+            "What are your strengths?",
+
+            "What is one weakness you are currently working on?",
+
+            "Why should we hire you?"
+        ];
+
+
+        let currentQuestion = 0;
+
+
+        const answer =
+            document.getElementById("answer");
+
+        const wordCount =
+            document.getElementById("wordCount");
+
+
+        /* Word Counter */
+
+        answer.addEventListener("input", function () {
+
+            const text =
+                answer.value.trim();
+
+            if (text === "") {
+
+                wordCount.textContent =
+                    "0 words";
+
+                return;
+            }
+
+            const words =
+                text.split(/\s+/).length;
+
+            wordCount.textContent =
+                words + " words";
+
+        });
+
+
+        /* Submit Answer */
+
+        function submitAnswer() {
+
+            const text =
+                answer.value.trim();
+
+            const message =
+                document.getElementById("message");
+
+
+            if (text === "") {
+
+                message.textContent =
+                    "Please enter your answer before continuing.";
+
+                message.className =
+                    "error";
+
+                return;
+
+            }
+
+
+            message.textContent =
+                "Answer submitted successfully!";
+
+            message.className =
+                "success";
+
+
+            setTimeout(function () {
+
+                currentQuestion++;
+
+
+                if (currentQuestion >= questions.length) {
+
+                    question.textContent =
+                        "Introduction Round Completed! 🎉";
+
+                    answer.style.display =
+                        "none";
+
+                    document.querySelector(".answer-section label").style.display =
+                        "none";
+
+                    document.querySelector(".answer-info").style.display =
+                        "none";
+
+                    document.getElementById("submitButton").textContent =
+                        "Continue to Aptitude Round →";
+
+                   document.getElementById("submitButton").onclick =
+    function () {
+
+        window.location.href = "aptitude.html";
+
+    };
+
+                    return;
+                }
+
+
+                document.getElementById("question").textContent =
+                    questions[currentQuestion];
+
+
+                document.getElementById("questionNumber").textContent =
+                    currentQuestion + 1;
+
+
+                const progress =
+                    ((currentQuestion + 1) / questions.length) * 100;
+
+                document.getElementById("progress").style.width =
+                    progress + "%";
+
+
+                answer.value = "";
+
+                wordCount.textContent =
+                    "0 words";
+
+                message.textContent = "";
+
+            }, 700);
+
+        }
+
+    </script>
+
+</body>
+
+</html>

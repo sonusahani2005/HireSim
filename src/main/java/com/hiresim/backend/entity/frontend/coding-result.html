@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>HireSim - Coding Result</title>
+
+    <link rel="stylesheet"
+          href="coding-result.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="top-bar">
+
+    <div class="logo">
+        HireSim
+    </div>
+
+    <div class="round-name">
+        Coding Round Result
+    </div>
+
+</header>
+
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="container">
+
+
+    <!-- RESULT CARD -->
+
+    <section class="result-card">
+
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+
+        <h1>
+            Coding Round Completed!
+        </h1>
+
+
+        <p class="subtitle">
+            Your coding round has been submitted successfully.
+        </p>
+
+
+
+        <!-- SCORE -->
+
+        <div class="score-box">
+
+            <div class="score-label">
+                Your Score
+            </div>
+
+            <div class="score">
+                <span id="score">0</span>%
+            </div>
+
+        </div>
+
+
+
+        <!-- STATS -->
+
+        <div class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-number"
+                     id="attempted">
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Attempted
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-number"
+                     id="notAttempted">
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Not Attempted
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-number"
+                     id="percentage">
+                    0%
+                </div>
+
+                <div class="stat-label">
+                    Score
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- MESSAGE -->
+
+        <div class="result-message"
+             id="resultMessage">
+
+            Keep practicing and improve your coding skills!
+
+        </div>
+
+
+
+        <!-- BUTTON -->
+
+        <button
+            class="continue-button"
+            onclick="continueToFinalResult()">
+
+            Continue to Final Result →
+
+        </button>
+
+
+    </section>
+
+
+</main>
+
+
+
+<script>
+
+
+/* =========================
+   GET RESULT
+========================= */
+
+
+const score =
+    Number(
+        localStorage.getItem("codingScore") || 0
+    );
+
+
+const total =
+    Number(
+        localStorage.getItem("codingTotal") || 0
+    );
+
+
+const attempted =
+    Number(
+        localStorage.getItem("codingAttempted") || 0
+    );
+
+
+const notAttempted =
+    Number(
+        localStorage.getItem("codingNotAttempted") || 0
+    );
+
+
+
+/* =========================
+   SCORE IS ALREADY %
+========================= */
+
+const percentage = score;
+
+
+
+/* =========================
+   SHOW RESULT
+========================= */
+
+
+document.getElementById("score")
+    .textContent = percentage;
+
+
+document.getElementById("attempted")
+    .textContent = attempted;
+
+
+document.getElementById("notAttempted")
+    .textContent = notAttempted;
+
+
+document.getElementById("percentage")
+    .textContent =
+        percentage + "%";
+
+
+
+/* =========================
+   RESULT MESSAGE
+========================= */
+
+
+const message =
+    document.getElementById("resultMessage");
+
+
+if (attempted === 0) {
+
+    message.textContent =
+        "No coding questions were attempted. Keep practicing and try again.";
+
+}
+else if (percentage >= 80) {
+
+    message.textContent =
+        "Excellent work! Your coding performance was strong.";
+
+}
+else if (percentage >= 60) {
+
+    message.textContent =
+        "Good performance! Keep practicing to improve further.";
+
+}
+else if (percentage >= 40) {
+
+    message.textContent =
+        "You have a good starting point. Practice more coding problems.";
+
+}
+else {
+
+    message.textContent =
+        "Keep practicing. Regular coding practice will improve your skills.";
+
+}
+
+
+
+/* =========================
+   FINAL RESULT
+========================= */
+
+
+function continueToFinalResult() {
+
+    window.location.href =
+        "final-result.html";
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

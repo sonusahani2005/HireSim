@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HireSim - Interview Mode</title>
+
+    <link rel="stylesheet" href="interview.css">
+</head>
+
+<body>
+
+    <div class="page">
+
+        <div class="header">
+
+            <h1>HireSim</h1>
+
+            <p>Choose your interview experience</p>
+
+            <div class="selection-info">
+
+                <span id="companyName">Company</span>
+
+                <span>•</span>
+
+                <span id="roleName">Job Role</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="mode-container">
+
+
+            <!-- Practice -->
+
+            <div class="mode-card">
+
+                <div class="mode-icon">
+                    📚
+                </div>
+
+                <h2>Practice Mode</h2>
+
+                <p>
+                    Learn while you practice with helpful
+                    explanations and feedback.
+                </p>
+
+                <button onclick="selectMode('Practice Mode')">
+                    Select Mode
+                </button>
+
+            </div>
+
+
+            <!-- Realistic -->
+
+            <div class="mode-card featured">
+
+                <div class="badge">
+                    Realistic Experience
+                </div>
+
+                <div class="mode-icon">
+                    🎯
+                </div>
+
+                <h2>Realistic Mode</h2>
+
+                <p>
+                    Experience an interview flow similar to
+                    a real IT interview.
+                </p>
+
+                <button onclick="selectMode('Realistic Mode')">
+                    Select Mode
+                </button>
+
+            </div>
+
+
+            <!-- Challenge -->
+
+            <div class="mode-card">
+
+                <div class="mode-icon">
+                    🔥
+                </div>
+
+                <h2>Challenge Mode</h2>
+
+                <p>
+                    Test yourself with difficult questions
+                    and time-based challenges.
+                </p>
+
+                <button onclick="selectMode('Challenge Mode')">
+                    Select Mode
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <p id="modeMessage"></p>
+
+    </div>
+
+
+    <script>
+
+        /*
+         * Get selected company and role
+         * from Dashboard.
+         */
+
+        const company =
+            localStorage.getItem("selectedCompany");
+
+        const role =
+            localStorage.getItem("selectedRole");
+
+
+        /*
+         * Show selected information.
+         */
+
+        if (company) {
+
+            document.getElementById("companyName")
+                .textContent = company;
+
+        }
+
+
+        if (role) {
+
+            document.getElementById("roleName")
+                .textContent = role;
+
+        }
+
+
+        /*
+         * Select interview mode.
+         */
+
+        function selectMode(mode) {
+
+            if (!company || !role) {
+
+                document.getElementById("modeMessage")
+                    .textContent =
+                    "Please select company and job role first.";
+
+                return;
+            }
+
+
+            /*
+             * Save selected mode.
+             */
+
+            localStorage.setItem(
+                "selectedMode",
+                mode
+            );
+
+
+            /*
+             * Go to Interview Setup.
+             */
+
+            window.location.href =
+                "interview-setup.html";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

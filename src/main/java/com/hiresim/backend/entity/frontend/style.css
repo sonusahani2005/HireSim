@@ -1,0 +1,142 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e1b4b);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+}
+
+.container {
+    width: 100%;
+    max-width: 430px;
+    padding: 20px;
+}
+
+.brand {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.brand h1 {
+    font-size: 42px;
+    margin-bottom: 8px;
+}
+
+.brand p {
+    color: #cbd5e1;
+    font-size: 15px;
+}
+
+.form-box {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 18px;
+    padding: 30px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.tabs {
+    display: flex;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 25px;
+}
+
+.tabs button {
+    width: 50%;
+    padding: 11px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #cbd5e1;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.tabs button.active {
+    background: #6366f1;
+    color: white;
+}
+
+form h2 {
+    font-size: 25px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #94a3b8;
+    font-size: 14px;
+    margin-bottom: 22px;
+}
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 14px;
+    color: #e2e8f0;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    margin-bottom: 17px;
+    border: 1px solid #475569;
+    border-radius: 9px;
+    background: rgba(15, 23, 42, 0.7);
+    color: white;
+    outline: none;
+    font-size: 14px;
+}
+
+input:focus {
+    border-color: #818cf8;
+}
+
+input::placeholder {
+    color: #64748b;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 9px;
+    background: #6366f1;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.submit-btn:hover {
+    background: #4f46e5;
+}
+
+.hidden {
+    display: none;
+}
+
+.message {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #cbd5e1;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #94a3b8;
+    font-size: 13px;
+}

@@ -1,0 +1,2630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HireSim - Coding Round</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        .header {
+            background: #111827;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+        }
+
+        .timer {
+            background: #dc2626;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            margin: 25px auto;
+        }
+
+        .progress-box {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        #progress {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .main {
+            display: grid;
+            grid-template-columns: 42% 58%;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .question-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 17px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .difficulty {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .test-case {
+            border: 1px solid #ddd;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: #fafafa;
+        }
+
+        .test-case strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .language-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        #languageBadge {
+            background: #e5e7eb;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 420px;
+            resize: vertical;
+            background: #111827;
+            color: #f9fafb;
+            border: none;
+            border-radius: 8px;
+            padding: 18px;
+            font-family: Consolas, monospace;
+            font-size: 15px;
+            line-height: 1.5;
+            outline: none;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            padding: 11px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .run-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .submit-btn {
+            background: #16a34a;
+            color: white;
+        }
+
+        .reset-btn {
+            background: #6b7280;
+            color: white;
+        }
+
+        .nav-btn {
+            background: #111827;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.88;
+        }
+
+        .output {
+            margin-top: 20px;
+            background: #111827;
+            color: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            min-height: 100px;
+            white-space: pre-wrap;
+            font-family: Consolas, monospace;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .question-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .question-number {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        .question-number.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .question-number.submitted {
+            background: #16a34a;
+            color: white;
+        }
+
+        .result-message {
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 900px) {
+            .main {
+                grid-template-columns: 1fr;
+            }
+
+            textarea {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+    <h1>HireSim - Coding Round</h1>
+    <div class="timer" id="timer">30:00</div>
+</header>
+
+<div class="container">
+
+    <div class="progress-box">
+        <div id="progress">Loading coding questions...</div>
+
+        <div class="question-buttons" id="questionButtons"></div>
+    </div>
+
+    <div class="main">
+
+        <!-- LEFT SIDE -->
+        <div class="card">
+
+            <div class="question-title">
+                Coding Question
+            </div>
+
+            <div class="difficulty" id="difficulty">
+                Loading...
+            </div>
+
+            <div class="question-text" id="questionText">
+                Loading question...
+            </div>
+
+            <h3>Test Cases</h3>
+
+            <div id="testCases">
+                Loading test cases...
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+        <div class="card">
+
+            <div class="editor-header">
+
+                <div class="language-box">
+
+                    <label for="language">
+                        Language:
+                    </label>
+
+                    <select id="language" onchange="changeLanguage()">
+
+                        <option value="java">
+                            Java
+                        </option>
+
+                        <option value="python">
+                            Python
+                        </option>
+
+                        <option value="cpp">
+                            C++
+                        </option>
+
+                    </select>
+
+                    <span id="languageBadge">
+                        Java
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <textarea
+                id="codeEditor"
+                spellcheck="false"
+                placeholder="Write your code here..."
+            ></textarea>
+
+
+            <div class="buttons">
+
+                <button
+                    class="run-btn"
+                    onclick="runCode()"
+                >
+                    ▶ Run Code
+                </button>
+
+                <button
+                    class="submit-btn"
+                    onclick="submitCurrentCode()"
+                >
+                    ✓ Submit
+                </button>
+
+                <button
+                    class="reset-btn"
+                    onclick="resetCode()"
+                >
+                    ↻ Reset
+                </button>
+
+            </div>
+
+
+            <div
+                class="output"
+                id="output"
+            >
+                Output will appear here...
+            </div>
+
+
+            <div class="result-message" id="resultMessage"></div>
+
+
+           <div class="navigation">
+
+    <button
+        class="nav-btn"
+        onclick="previousProblem()"
+    >
+        ← Previous
+    </button>
+
+    <button
+        class="nav-btn"
+        onclick="nextProblem()"
+    >
+        Next →
+    </button>
+
+    <button
+        class="submit-btn"
+        onclick="finishCoding()"
+    >
+        ✓ Finish Coding Test
+    </button>
+
+</div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // ==========================================
+    // GLOBAL VARIABLES
+    // ==========================================
+
+    let codingQuestions = [];
+
+    let currentProblem = 0;
+
+    let totalSeconds = 30 * 60;
+
+    let timer = null;
+
+    let submittedProblems = [];
+
+    let codeAnswers = {};
+
+    let problemScores = [];
+
+
+    // ==========================================
+    // LOAD CODING QUESTIONS
+    // ==========================================
+
+   async function loadCodingQuestions() {
+
+    try {
+
+        const response =
+            await fetch("http://localhost:8080/coding/questions");
+
+        if (!response.ok) {
+            throw new Error("Unable to load coding questions");
+        }
+
+        const questions =
+            await response.json();
+
+        // Shuffle questions randomly
+        questions.sort(() => Math.random() - 0.5);
+
+        // Select maximum 5 questions
+        const selectedQuestions = questions.slice(0, 5);
+
+        codingQuestions =
+            selectedQuestions.map(question => {
+
+                return {
+                    id: question.id,
+                    questionText: question.questionText,
+                    difficulty: question.difficulty || "Easy",
+                    category: question.category || "Coding"
+                };
+
+            });
+
+        currentProblem = 0;
+
+        submittedProblems =
+            new Array(codingQuestions.length).fill(false);
+
+        problemScores =
+            new Array(codingQuestions.length).fill(0);
+
+        updateNavigation();
+
+        await loadProblem();
+
+        startTimer();
+
+    } catch (error) {
+
+        console.error(error);
+
+        document.getElementById("progress").innerText =
+            "Unable to load coding questions.";
+
+        document.getElementById("questionText").innerText =
+            "Please make sure the HireSim backend is running.";
+
+    }
+
+}
+
+    // ==========================================
+    // LANGUAGE NAME
+    // ==========================================
+
+    function getLanguageName(language) {
+
+        if (language === "java") {
+            return "Java";
+        }
+
+        if (language === "python") {
+            return "Python";
+        }
+
+        if (language === "cpp") {
+            return "C++";
+        }
+
+        return language;
+
+    }
+
+
+    // ==========================================
+    // STARTER CODE
+    // ==========================================
+
+  function getStarterCode(language, questionIndex) {
+
+    const question = codingQuestions[questionIndex];
+
+    if (!question) {
+        return "";
+    }
+
+    const id = question.id;
+
+
+    // =========================
+    // JAVA
+    // =========================
+
+    if (language === "java") {
+
+        switch (id) {
+
+            case 91:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        int max = Integer.MIN_VALUE;
+
+        for(int i = 0; i < n; i++) {
+            int x = sc.nextInt();
+
+            // Write your logic here
+        }
+
+        System.out.println(max);
+    }
+}`;
+
+            case 92:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int original = n;
+        int reverse = 0;
+
+        // Write your logic here
+
+        System.out.println(original == reverse);
+    }
+}`;
+
+            case 93:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        int sum = 0;
+
+        for(int i = 0; i < n; i++) {
+            int x = sc.nextInt();
+
+            // Write your logic here
+        }
+
+        System.out.println(sum);
+    }
+}`;
+
+            case 94:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        String str = sc.nextLine();
+
+        // Write your logic here
+
+    }
+}`;
+
+            case 95:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        boolean prime = true;
+
+        // Write your logic here
+
+        System.out.println(prime);
+    }
+}`;
+
+            case 96:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int min = Integer.MAX_VALUE;
+
+        for(int i = 0; i < n; i++) {
+
+            int x = sc.nextInt();
+
+            // Write your logic here
+        }
+
+        System.out.println(min);
+    }
+}`;
+
+            case 97:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int sum = 0;
+
+        for(int i = 0; i < n; i++) {
+            sum += sc.nextInt();
+        }
+
+        double average = 0;
+
+        // Write your logic here
+
+        System.out.println(average);
+    }
+}`;
+
+            case 98:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int count = 0;
+
+        for(int i = 0; i < n; i++) {
+
+            int x = sc.nextInt();
+
+            // Write your logic here
+        }
+
+        System.out.println(count);
+    }
+}`;
+
+            case 99:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int count = 0;
+
+        for(int i = 0; i < n; i++) {
+
+            int x = sc.nextInt();
+
+            // Write your logic here
+        }
+
+        System.out.println(count);
+    }
+}`;
+
+            case 100:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int positive = 0;
+        int negative = 0;
+
+        for(int i = 0; i < n; i++) {
+
+            int x = sc.nextInt();
+
+            // Write your logic here
+        }
+
+        System.out.println(positive + " " + negative);
+    }
+}`;
+
+            case 101:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int a = sc.nextInt();
+        int b = sc.nextInt();
+
+        // Write your logic here
+
+        System.out.println(a + " " + b);
+    }
+}`;
+
+            case 102:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        long factorial = 1;
+
+        // Write your logic here
+
+        System.out.println(factorial);
+    }
+}`;
+
+            case 103:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int sum = 0;
+
+        // Write your logic here
+
+        System.out.println(sum);
+    }
+}`;
+
+            case 104:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int reverse = 0;
+
+        // Write your logic here
+
+        System.out.println(reverse);
+    }
+}`;
+
+            case 105:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        // Write your logic here
+
+        System.out.println("Even");
+    }
+}`;
+
+            case 106:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int a = sc.nextInt();
+        int b = sc.nextInt();
+        int c = sc.nextInt();
+
+        int largest = a;
+
+        // Write your logic here
+
+        System.out.println(largest);
+    }
+}`;
+
+            case 107:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        String str = sc.nextLine();
+
+        int count = 0;
+
+        // Write your logic here
+
+        System.out.println(count);
+    }
+}`;
+
+            case 108:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        String str = sc.nextLine();
+
+        int count = 0;
+
+        // Write your logic here
+
+        System.out.println(count);
+    }
+}`;
+
+            case 109:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        String str = sc.nextLine();
+
+        // Write your logic here
+
+        System.out.println(str);
+    }
+}`;
+
+            case 110:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        String str = sc.nextLine();
+
+        int count = 0;
+
+        // Write your logic here
+
+        System.out.println(count);
+    }
+}`;
+
+            case 111:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int largest = Integer.MIN_VALUE;
+        int secondLargest = Integer.MIN_VALUE;
+
+        for(int i = 0; i < n; i++) {
+
+            int x = sc.nextInt();
+
+            // Write your logic here
+        }
+
+        System.out.println(secondLargest);
+    }
+}`;
+
+            case 112:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int[] arr = new int[n];
+
+        for(int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        int target = sc.nextInt();
+
+        int answer = -1;
+
+        // Write your logic here
+
+        System.out.println(answer);
+    }
+}`;
+
+            case 113:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int[] arr = new int[n];
+
+        for(int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        int target = sc.nextInt();
+
+        int answer = -1;
+
+        // Write your logic here
+
+        System.out.println(answer);
+    }
+}`;
+
+            case 114:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int[] arr = new int[n];
+
+        for(int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        // Write your bubble sort logic here
+
+        for(int i = 0; i < n; i++) {
+            System.out.print(arr[i]);
+
+            if(i < n - 1) {
+                System.out.print(" ");
+            }
+        }
+    }
+}`;
+
+            case 115:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int[] arr = new int[n];
+
+        for(int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        // Write your logic here
+
+    }
+}`;
+
+            case 116:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int[] arr = new int[n];
+
+        for(int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        // Write your frequency logic here
+
+    }
+}`;
+
+            case 117:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        String str1 = sc.next();
+        String str2 = sc.next();
+
+        boolean result = false;
+
+        // Write your logic here
+
+        System.out.println(result);
+    }
+}`;
+
+            case 118:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        String str = sc.nextLine();
+
+        // Write your logic here
+
+    }
+}`;
+
+            case 119:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        // Write your Fibonacci logic here
+
+    }
+}`;
+
+            case 120:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        String str = sc.nextLine();
+
+        boolean palindrome = false;
+
+        // Write your logic here
+
+        System.out.println(palindrome);
+    }`;
+
+            default:
+                return `import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // Write your solution here
+
+    }
+}`;
+        }
+    }
+
+
+    // =========================
+    // PYTHON
+    // =========================
+
+    if (language === "python") {
+
+        switch (id) {
+
+            case 91:
+            case 96:
+                return `data = list(map(int, input().split()))
+
+n = data[0]
+arr = data[1:]
+
+# Write your logic here
+
+`;
+
+            case 92:
+                return `n = int(input())
+
+# Write your logic here
+
+print(False)`;
+
+            case 93:
+                return `data = list(map(int, input().split()))
+
+n = data[0]
+arr = data[1:]
+
+# Write your logic here
+
+print(0)`;
+
+            case 94:
+                return `text = input()
+
+# Write your logic here
+
+`;
+
+            case 95:
+                return `n = int(input())
+
+prime = True
+
+# Write your logic here
+
+print(prime)`;
+
+            case 97:
+                return `data = list(map(int, input().split()))
+
+n = data[0]
+arr = data[1:]
+
+total = 0
+
+# Write your logic here
+
+average = 0
+
+print(average)`;
+
+            case 98:
+            case 99:
+                return `data = list(map(int, input().split()))
+
+n = data[0]
+arr = data[1:]
+
+count = 0
+
+# Write your logic here
+
+print(count)`;
+
+            case 100:
+                return `data = list(map(int, input().split()))
+
+n = data[0]
+arr = data[1:]
+
+positive = 0
+negative = 0
+
+# Write your logic here
+
+print(positive, negative)`;
+
+            case 101:
+                return `a, b = map(int, input().split())
+
+# Write your logic here
+
+print(a, b)`;
+
+            case 102:
+                return `n = int(input())
+
+factorial = 1
+
+# Write your logic here
+
+print(factorial)`;
+
+            case 103:
+                return `n = int(input())
+
+sum_digits = 0
+
+# Write your logic here
+
+print(sum_digits)`;
+
+            case 104:
+                return `n = int(input())
+
+reverse = 0
+
+# Write your logic here
+
+print(reverse)`;
+
+            case 105:
+                return `n = int(input())
+
+# Write your logic here
+
+print("Even")`;
+
+            case 106:
+                return `a, b, c = map(int, input().split())
+
+largest = a
+
+# Write your logic here
+
+print(largest)`;
+
+            case 107:
+            case 108:
+                return `text = input()
+
+count = 0
+
+# Write your logic here
+
+print(count)`;
+
+            case 109:
+                return `text = input()
+
+# Write your logic here
+
+print(text.upper())`;
+
+            case 110:
+                return `text = input()
+
+count = 0
+
+# Write your logic here
+
+print(count)`;
+
+            case 111:
+                return `data = list(map(int, input().split()))
+
+n = data[0]
+arr = data[1:]
+
+largest = float('-inf')
+second_largest = float('-inf')
+
+# Write your logic here
+
+print(second_largest)`;
+
+            case 112:
+            case 113:
+                return `data = list(map(int, input().split()))
+
+n = data[0]
+arr = data[1:n+1]
+target = data[n+1]
+
+answer = -1
+
+# Write your logic here
+
+print(answer)`;
+
+            case 114:
+                return `data = list(map(int, input().split()))
+
+n = data[0]
+arr = data[1:]
+
+# Write your bubble sort logic here
+
+print(*arr)`;
+
+            case 115:
+                return `data = list(map(int, input().split()))
+
+n = data[0]
+arr = data[1:]
+
+# Write your logic here
+
+`;
+
+            case 116:
+                return `data = list(map(int, input().split()))
+
+n = data[0]
+arr = data[1:]
+
+# Write your frequency logic here
+
+`;
+
+            case 117:
+                return `str1, str2 = input().split()
+
+result = False
+
+# Write your logic here
+
+print(result)`;
+
+            case 118:
+                return `text = input()
+
+# Write your logic here
+
+`;
+
+            case 119:
+                return `n = int(input())
+
+# Write your Fibonacci logic here
+
+`;
+
+            case 120:
+                return `text = input()
+
+palindrome = False
+
+# Write your logic here
+
+print(palindrome)`;
+
+            default:
+                return `# Write your solution here
+`;
+        }
+    }
+
+
+    // =========================
+    // C++
+    // =========================
+
+    if (language === "cpp") {
+
+        switch (id) {
+
+            case 91:
+            case 96:
+            case 98:
+            case 99:
+            case 100:
+            case 111:
+            case 112:
+            case 113:
+            case 114:
+            case 115:
+            case 116:
+                return `#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+
+    int n;
+    cin >> n;
+
+    vector<int> arr(n);
+
+    for(int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+
+    // Write your logic here
+
+    return 0;
+}`;
+
+            case 92:
+                return `#include <iostream>
+using namespace std;
+
+int main() {
+
+    int n;
+    cin >> n;
+
+    int original = n;
+    int reverse = 0;
+
+    // Write your logic here
+
+    cout << (original == reverse);
+
+    return 0;
+}`;
+
+            case 93:
+                return `#include <iostream>
+using namespace std;
+
+int main() {
+
+    int n;
+    cin >> n;
+
+    int sum = 0;
+
+    for(int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+
+        // Write your logic here
+    }
+
+    cout << sum;
+
+    return 0;
+}`;
+
+            case 94:
+                return `#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+
+    string str;
+    getline(cin, str);
+
+    // Write your logic here
+
+    return 0;
+}`;
+
+            case 95:
+                return `#include <iostream>
+using namespace std;
+
+int main() {
+
+    int n;
+    cin >> n;
+
+    bool prime = true;
+
+    // Write your logic here
+
+    cout << prime;
+
+    return 0;
+}`;
+
+            case 97:
+                return `#include <iostream>
+using namespace std;
+
+int main() {
+
+    int n;
+    cin >> n;
+
+    int sum = 0;
+
+    for(int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        sum += x;
+    }
+
+    double average = 0;
+
+    // Write your logic here
+
+    cout << average;
+
+    return 0;
+}`;
+
+            case 101:
+                return `#include <iostream>
+using namespace std;
+
+int main() {
+
+    int a, b;
+    cin >> a >> b;
+
+    // Write your logic here
+
+    cout << a << " " << b;
+
+    return 0;
+}`;
+
+            case 102:
+                return `#include <iostream>
+using namespace std;
+
+int main() {
+
+    int n;
+    cin >> n;
+
+    long long factorial = 1;
+
+    // Write your logic here
+
+    cout << factorial;
+
+    return 0;
+}`;
+
+            case 103:
+                return `#include <iostream>
+using namespace std;
+
+int main() {
+
+    int n;
+    cin >> n;
+
+    int sum = 0;
+
+    // Write your logic here
+
+    cout << sum;
+
+    return 0;
+}`;
+
+            case 104:
+                return `#include <iostream>
+using namespace std;
+
+int main() {
+
+    int n;
+    cin >> n;
+
+    int reverse = 0;
+
+    // Write your logic here
+
+    cout << reverse;
+
+    return 0;
+}`;
+
+            case 105:
+                return `#include <iostream>
+using namespace std;
+
+int main() {
+
+    int n;
+    cin >> n;
+
+    // Write your logic here
+
+    cout << "Even";
+
+    return 0;
+}`;
+
+            case 106:
+                return `#include <iostream>
+using namespace std;
+
+int main() {
+
+    int a, b, c;
+    cin >> a >> b >> c;
+
+    int largest = a;
+
+    // Write your logic here
+
+    cout << largest;
+
+    return 0;
+}`;
+
+            case 107:
+            case 108:
+                return `#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+
+    string str;
+    getline(cin, str);
+
+    int count = 0;
+
+    // Write your logic here
+
+    cout << count;
+
+    return 0;
+}`;
+
+            case 109:
+                return `#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+
+    string str;
+    getline(cin, str);
+
+    // Write your logic here
+
+    cout << str;
+
+    return 0;
+}`;
+
+            case 110:
+                return `#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+
+    string str;
+    getline(cin, str);
+
+    int count = 0;
+
+    // Write your logic here
+
+    cout << count;
+
+    return 0;
+}`;
+
+            case 117:
+                return `#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+
+    string str1, str2;
+
+    cin >> str1 >> str2;
+
+    bool result = false;
+
+    // Write your logic here
+
+    cout << result;
+
+    return 0;
+}`;
+
+            case 118:
+                return `#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+
+    string str;
+    getline(cin, str);
+
+    // Write your logic here
+
+    return 0;
+}`;
+
+            case 119:
+                return `#include <iostream>
+using namespace std;
+
+int main() {
+
+    int n;
+    cin >> n;
+
+    // Write your Fibonacci logic here
+
+    return 0;
+}`;
+
+            case 120:
+                return `#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+
+    string str;
+    getline(cin, str);
+
+    bool palindrome = false;
+
+    // Write your logic here
+
+    cout << palindrome;
+
+    return 0;
+}`;
+
+            default:
+                return `#include <iostream>
+using namespace std;
+
+int main() {
+
+    // Write your solution here
+
+    return 0;
+}`;
+        }
+    }
+
+
+    return "// Unsupported language.";
+}
+
+    // ==========================================
+    // LOAD CURRENT QUESTION
+    // ==========================================
+
+    async function loadProblem() {
+
+        if (codingQuestions.length === 0) {
+            return;
+        }
+
+
+        const question =
+            codingQuestions[currentProblem];
+
+
+        document.getElementById("progress").innerText =
+            `Question ${currentProblem + 1} of ${codingQuestions.length}`;
+
+
+        document.getElementById("questionText").innerText =
+            question.questionText;
+
+
+        document.getElementById("difficulty").innerText =
+            question.difficulty;
+
+
+        document.getElementById("resultMessage").innerText =
+            "";
+
+
+        const testCasesContainer =
+            document.getElementById("testCases");
+
+        testCasesContainer.innerHTML =
+            "Loading test cases...";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `http://localhost:8080/coding/testcases/${question.id}`
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Unable to load test cases"
+                );
+
+            }
+
+
+            const testCases =
+                await response.json();
+
+
+            if (testCases.length === 0) {
+
+                testCasesContainer.innerHTML =
+                    "No test cases available.";
+
+            } else {
+
+                testCasesContainer.innerHTML = "";
+
+
+                testCases.forEach(testCase => {
+
+                    const div =
+                        document.createElement("div");
+
+                    div.className =
+                        "test-case";
+
+
+                    div.innerHTML = `
+                        <strong>
+                            Test Case ${testCase.testCaseNumber}
+                        </strong>
+
+                        Input:
+                        ${escapeHtml(testCase.input)}
+
+                        <br><br>
+
+                        Expected Output:
+                        ${escapeHtml(testCase.expectedOutput)}
+                    `;
+
+
+                    testCasesContainer.appendChild(div);
+
+                });
+
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+            testCasesContainer.innerHTML =
+                "Unable to load test cases.";
+
+        }
+
+
+       const language =
+    document.getElementById("language").value;
+
+const key =
+    question.id + "_" + language;
+
+const savedCode =
+    codeAnswers[key];
+
+if (savedCode) {
+
+    document.getElementById("codeEditor").value =
+        savedCode;
+
+} else {
+
+    document.getElementById("codeEditor").value =
+        getStarterCode(
+            language,
+            currentProblem
+        );
+
+}
+
+
+        updateLanguageBadge();
+
+        updateNavigation();
+
+    }
+
+
+    // ==========================================
+    // LANGUAGE CHANGE
+    // ==========================================
+
+function changeLanguage() {
+
+    const language =
+        document.getElementById("language").value;
+
+    const question =
+        codingQuestions[currentProblem];
+
+    if (!question) {
+        return;
+    }
+
+    const key =
+        question.id + "_" + language;
+
+    const savedCode =
+        codeAnswers[key];
+
+    if (savedCode) {
+
+        document.getElementById("codeEditor").value =
+            savedCode;
+
+    } else {
+
+        document.getElementById("codeEditor").value =
+            getStarterCode(
+                language,
+                currentProblem
+            );
+
+    }
+
+    updateLanguageBadge();
+}
+
+
+    // ==========================================
+    // LANGUAGE BADGE
+    // ==========================================
+
+    function updateLanguageBadge() {
+
+        const language =
+            document.getElementById("language").value;
+
+
+        document.getElementById("languageBadge").innerText =
+            getLanguageName(language);
+
+    }
+
+
+    // ==========================================
+    // SAVE CODE
+    // ==========================================
+
+function saveCode() {
+
+    if (codingQuestions.length === 0) {
+        return;
+    }
+
+    const question =
+        codingQuestions[currentProblem];
+
+    const language =
+        document.getElementById("language").value;
+
+    const code =
+        document.getElementById("codeEditor").value;
+
+    const key =
+        question.id + "_" + language;
+
+    codeAnswers[key] = code;
+}
+
+
+    // ==========================================
+    // NEXT QUESTION
+    // ==========================================
+
+    async function nextProblem() {
+
+        saveCode();
+
+
+        if (
+            currentProblem <
+            codingQuestions.length - 1
+        ) {
+
+            currentProblem++;
+
+            await loadProblem();
+
+        } else {
+
+            alert(
+                "This is the last coding question."
+            );
+
+        }
+
+    }
+
+
+    // ==========================================
+    // PREVIOUS QUESTION
+    // ==========================================
+
+    async function previousProblem() {
+
+        saveCode();
+
+
+        if (currentProblem > 0) {
+
+            currentProblem--;
+
+            await loadProblem();
+
+        } else {
+
+            alert(
+                "This is the first coding question."
+            );
+
+        }
+
+    }
+
+
+    // ==========================================
+    // QUESTION NAVIGATION
+    // ==========================================
+
+    function updateNavigation() {
+
+        const container =
+            document.getElementById("questionButtons");
+
+
+        container.innerHTML = "";
+
+
+        codingQuestions.forEach(
+            (question, index) => {
+
+                const button =
+                    document.createElement("button");
+
+
+                button.className =
+                    "question-number";
+
+
+                button.innerText =
+                    index + 1;
+
+
+                if (index === currentProblem) {
+
+                    button.classList.add("active");
+
+                }
+
+
+                if (submittedProblems[index]) {
+
+                    button.classList.add("submitted");
+
+                }
+
+
+                button.onclick =
+                    async function() {
+
+                        saveCode();
+
+                        currentProblem = index;
+
+                        await loadProblem();
+
+                    };
+
+
+                container.appendChild(button);
+
+            }
+        );
+
+    }
+
+
+    // ==========================================
+    // RESET CODE
+    // ==========================================
+
+    function resetCode() {
+
+        if (codingQuestions.length === 0) {
+            return;
+        }
+
+
+        const question =
+            codingQuestions[currentProblem];
+
+
+        delete codeAnswers[question.id];
+
+
+        const language =
+            document.getElementById("language").value;
+
+
+        document.getElementById("codeEditor").value =
+            getStarterCode(
+                language,
+                currentProblem
+            );
+
+
+        document.getElementById("output").innerText =
+            "Code reset.";
+
+
+        document.getElementById("resultMessage").innerText =
+            "";
+
+    }
+
+
+    // ==========================================
+    // RUN CODE
+    // ==========================================
+
+  async function runCode() {
+
+    const question = codingQuestions[currentProblem];
+
+    if (!question) {
+        return;
+    }
+
+    const language = document.getElementById("language").value;
+    const code = document.getElementById("codeEditor").value;
+
+    const output = document.getElementById("output");
+    const resultMessage = document.getElementById("resultMessage");
+
+    if (!code.trim()) {
+        output.innerText = "Please write some code first.";
+        resultMessage.innerText = "";
+        return;
+    }
+
+    output.innerText = "Running code...";
+    resultMessage.innerText = "";
+
+    try {
+
+        const response = await fetch("http://localhost:8080/coding/run", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                questionId: question.id,
+                language: language,
+                code: code,
+                input: ""
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+
+            output.innerText =
+                data.output || "Code executed successfully.";
+
+            resultMessage.innerText =
+                `Passed: ${data.passedTests}/${data.totalTests}`;
+
+        } else {
+
+            output.innerText =
+                data.error || "Code execution failed.";
+
+            resultMessage.innerText =
+                `Passed: ${data.passedTests}/${data.totalTests}`;
+
+        }
+
+    } catch (error) {
+
+        output.innerText =
+            "Unable to connect to backend.";
+
+        resultMessage.innerText =
+            "Make sure Spring Boot backend is running.";
+
+        console.error(error);
+    }
+}
+
+
+    // ==========================================
+    // SUBMIT CURRENT QUESTION
+    // ==========================================
+
+   async function submitCurrentCode() {
+
+    saveCode();
+
+    const question = codingQuestions[currentProblem];
+
+    if (!question) {
+        return;
+    }
+
+    const language =
+        document.getElementById("language").value;
+
+    const code =
+        document.getElementById("codeEditor").value;
+
+    if (!code.trim()) {
+
+        alert(
+            "Please write your code before submitting."
+        );
+
+        return;
+    }
+
+    document.getElementById("output").innerText =
+        "Submitting code...";
+
+    document.getElementById("resultMessage").innerText =
+        "";
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:8080/coding/run",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        questionId:
+                            question.id,
+
+                        language:
+                            language,
+
+                        code:
+                            code,
+
+                        input:
+                            ""
+
+                    })
+                }
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Server error: " +
+                response.status
+            );
+
+        }
+
+        const result =
+            await response.json();
+
+        const passed =
+            result.passedTests || 0;
+
+        const total =
+            result.totalTests || 0;
+
+        let score = 0;
+
+        if (total > 0) {
+
+            score =
+                Math.round(
+                    (passed / total) * 100
+                );
+
+        }
+
+        submittedProblems[currentProblem] =
+            true;
+
+        problemScores[currentProblem] =
+            score;
+
+        updateNavigation();
+
+        if (result.success) {
+
+            document.getElementById("output").innerText =
+                "✓ All test cases passed!\n\n" +
+                "Passed: " +
+                passed +
+                "/" +
+                total;
+
+            document.getElementById("resultMessage").innerText =
+                "Score: " + score + "/100";
+
+        } else {
+
+            document.getElementById("output").innerText =
+                "Some test cases failed.\n\n" +
+                "Passed: " +
+                passed +
+                "/" +
+                total +
+                "\n\n" +
+                (result.error || "");
+
+            document.getElementById("resultMessage").innerText =
+                "Score: " + score + "/100";
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        document.getElementById("output").innerText =
+            "Submission failed.\n\n" +
+            error.message;
+
+        document.getElementById("resultMessage").innerText =
+            "";
+    }
+}
+
+    // ==========================================
+    // FINISH CODING TEST
+    // ==========================================
+
+    function submitCodingTest() {
+
+        finishCoding();
+
+    }
+
+
+    function finishCoding() {
+
+        saveCode();
+
+
+        let attempted = 0;
+
+
+        for (
+            let i = 0;
+            i < submittedProblems.length;
+            i++
+        ) {
+
+            if (submittedProblems[i]) {
+
+                attempted++;
+
+            }
+
+        }
+
+
+        const total =
+            codingQuestions.length;
+
+
+        const notAttempted =
+            total - attempted;
+
+
+        let totalScore = 0;
+
+
+        for (
+            let i = 0;
+            i < problemScores.length;
+            i++
+        ) {
+
+            totalScore +=
+                problemScores[i] || 0;
+
+        }
+
+
+        const score =
+            total > 0
+                ? Math.round(
+                    totalScore / total
+                )
+                : 0;
+
+
+        localStorage.setItem(
+            "codingScore",
+            score
+        );
+
+
+        localStorage.setItem(
+            "codingTotal",
+            total
+        );
+
+
+        localStorage.setItem(
+            "codingAttempted",
+            attempted
+        );
+
+
+        localStorage.setItem(
+            "codingNotAttempted",
+            notAttempted
+        );
+
+
+        localStorage.setItem(
+            "codingCompleted",
+            "true"
+        );
+
+
+        window.location.href =
+            "coding-result.html";
+
+    }
+
+
+    // ==========================================
+    // TIMER
+    // ==========================================
+
+    function startTimer() {
+
+        if (timer !== null) {
+            return;
+        }
+
+
+        timer =
+            setInterval(
+                function() {
+
+                    totalSeconds--;
+
+
+                    if (totalSeconds < 0) {
+
+                        totalSeconds = 0;
+
+                    }
+
+
+                    const minutes =
+                        Math.floor(
+                            totalSeconds / 60
+                        );
+
+
+                    const seconds =
+                        totalSeconds % 60;
+
+
+                    document.getElementById(
+                        "timer"
+                    ).innerText =
+                        String(minutes).padStart(2, "0") +
+                        ":" +
+                        String(seconds).padStart(2, "0");
+
+
+                    if (totalSeconds <= 0) {
+
+                        clearInterval(timer);
+
+                        timer = null;
+
+
+                        alert(
+                            "⏰ Coding Round time is over!"
+                        );
+
+
+                        finishCoding();
+
+                    }
+
+                },
+                1000
+            );
+
+    }
+
+
+    // ==========================================
+    // HTML ESCAPE
+    // ==========================================
+
+    function escapeHtml(value) {
+
+        if (value === null ||
+            value === undefined) {
+
+            return "";
+
+        }
+
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    // ==========================================
+    // START APPLICATION
+    // ==========================================
+
+    loadCodingQuestions();
+
+</script>
+
+</body>
+</html>

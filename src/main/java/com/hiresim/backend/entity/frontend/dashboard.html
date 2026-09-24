@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HireSim Dashboard</title>
+
+    <link rel="stylesheet" href="dashboard.css">
+
+   <style>
+
+    /* =========================
+       INTERVIEW HISTORY
+    ========================= */
+
+    .history-card {
+        margin-top: 30px;
+        padding: 25px;
+        background: #ffffff;
+        border-radius: 18px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .history-card .card-title {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .history-card .card-title .icon {
+        width: 55px;
+        height: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #eeeeff;
+        font-size: 28px;
+        flex-shrink: 0;
+    }
+
+    .history-card .card-title h2 {
+        margin: 0;
+        color: #222;
+        font-size: 22px;
+    }
+
+    .history-card .card-title p {
+        margin: 5px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
+
+    #historyList {
+        width: 100%;
+    }
+
+    .history-item {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 20px;
+        margin-bottom: 15px;
+        background: #fafaff;
+        border: 1px solid #e4e4f0;
+        border-radius: 14px;
+        color: #222;
+        text-align: left;
+        min-height: auto;
+    }
+
+    .history-item h3 {
+        margin: 0 0 12px;
+        color: #222;
+        font-size: 19px;
+        text-align: left;
+    }
+
+    .history-item p {
+        margin: 7px 0;
+        color: #555;
+        font-size: 15px;
+        line-height: 1.5;
+        text-align: left;
+    }
+
+    .history-item .score {
+        margin-top: 12px;
+        color: #635bff;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .no-history {
+        margin: 0;
+        padding: 25px;
+        text-align: center;
+        color: #777;
+        background: #fafaff;
+        border-radius: 12px;
+    }
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard">
+
+
+    <!-- =========================
+         WELCOME
+    ========================== -->
+
+    <div class="welcome-section">
+
+        <h1>
+            Welcome to <span>HireSim</span> 👋
+        </h1>
+
+        <p>
+            Select a company and job role to start your interview practice
+        </p>
+
+    </div>
+
+
+
+    <!-- =========================
+         INTERVIEW SETUP
+    ========================== -->
+
+    <div class="company-card">
+
+
+        <div class="card-title">
+
+            <div class="icon">
+                🏢
+            </div>
+
+            <div>
+
+                <h2>
+                    Interview Setup
+                </h2>
+
+                <p>
+                    Choose your company and desired job role
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Company -->
+
+        <label for="company">
+            Choose Company
+        </label>
+
+
+        <select id="company" onchange="showRoles()">
+
+            <option value="">
+                Select a company
+            </option>
+
+            <option value="TCS">
+                TCS
+            </option>
+
+            <option value="Infosys">
+                Infosys
+            </option>
+
+            <option value="Wipro">
+                Wipro
+            </option>
+
+            <option value="Accenture">
+                Accenture
+            </option>
+
+            <option value="Cognizant">
+                Cognizant
+            </option>
+
+            <option value="Capgemini">
+                Capgemini
+            </option>
+
+            <option value="HCLTech">
+                HCLTech
+            </option>
+
+            <option value="Tech Mahindra">
+                Tech Mahindra
+            </option>
+
+            <option value="Amazon">
+                Amazon
+            </option>
+
+            <option value="Microsoft">
+                Microsoft
+            </option>
+
+        </select>
+
+
+
+        <!-- Job Role -->
+
+        <div id="roleSection" class="hidden">
+
+            <label for="role">
+                Choose Job Role
+            </label>
+
+            <select id="role">
+
+                <option value="">
+                    Select a job role
+                </option>
+
+            </select>
+
+        </div>
+
+
+
+        <!-- Continue -->
+
+        <button onclick="continueToMode()">
+
+            Continue <span>→</span>
+
+        </button>
+
+
+        <p id="companyMessage" class="message"></p>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         INTERVIEW HISTORY
+    ========================== -->
+
+    <div class="history-card">
+
+
+        <div class="card-title">
+
+            <div class="icon">
+                📊
+            </div>
+
+            <div>
+
+                <h2>
+                    Previous Interview History
+                </h2>
+
+                <p>
+                    View your previous interview performance
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div id="historyList">
+
+            <p class="no-history">
+                No previous interviews yet.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+// =====================================
+// COMPANY AND ROLE
+// =====================================
+
+function showRoles() {
+
+
+    const company =
+        document.getElementById("company").value;
+
+
+    const roleSection =
+        document.getElementById("roleSection");
+
+
+    const role =
+        document.getElementById("role");
+
+
+
+    role.innerHTML = `
+        <option value="">
+            Select a job role
+        </option>
+    `;
+
+
+
+    if (company === "") {
+
+        roleSection.classList.add("hidden");
+
+        return;
+
+    }
+
+
+
+    roleSection.classList.remove("hidden");
+
+
+
+    let roles = [];
+
+
+
+    if (company === "TCS") {
+
+        roles = [
+            "Software Engineer",
+            "Java Developer",
+            "Full Stack Developer",
+            "Data Analyst"
+        ];
+
+    }
+
+
+    else if (company === "Infosys") {
+
+        roles = [
+            "Software Engineer",
+            "Java Developer",
+            "System Engineer",
+            "Data Analyst"
+        ];
+
+    }
+
+
+    else if (company === "Wipro") {
+
+        roles = [
+            "Software Engineer",
+            "Java Developer",
+            "Backend Developer",
+            "Data Analyst"
+        ];
+
+    }
+
+
+    else if (company === "Accenture") {
+
+        roles = [
+            "Software Engineer",
+            "Java Developer",
+            "Full Stack Developer",
+            "Cloud Engineer"
+        ];
+
+    }
+
+
+    else if (company === "Cognizant") {
+
+        roles = [
+            "Programmer Analyst",
+            "Java Developer",
+            "Software Engineer",
+            "Data Analyst"
+        ];
+
+    }
+
+
+    else if (company === "Capgemini") {
+
+        roles = [
+            "Software Engineer",
+            "Java Developer",
+            "Cloud Engineer",
+            "Data Analyst"
+        ];
+
+    }
+
+
+    else if (company === "HCLTech") {
+
+        roles = [
+            "Software Engineer",
+            "Java Developer",
+            "Backend Developer",
+            "Cloud Engineer"
+        ];
+
+    }
+
+
+    else if (company === "Tech Mahindra") {
+
+        roles = [
+            "Software Engineer",
+            "Java Developer",
+            "Backend Developer",
+            "Network Engineer"
+        ];
+
+    }
+
+
+    else if (company === "Amazon") {
+
+        roles = [
+            "Software Development Engineer",
+            "Backend Developer",
+            "Cloud Engineer",
+            "Data Engineer"
+        ];
+
+    }
+
+
+    else if (company === "Microsoft") {
+
+        roles = [
+            "Software Engineer",
+            "Backend Developer",
+            "Cloud Engineer",
+            "Data Engineer"
+        ];
+
+    }
+
+
+
+    roles.forEach(function(roleName) {
+
+
+        const option =
+            document.createElement("option");
+
+
+        option.value =
+            roleName;
+
+
+        option.textContent =
+            roleName;
+
+
+        role.appendChild(option);
+
+    });
+
+}
+
+
+
+// =====================================
+// CONTINUE TO INTERVIEW MODE
+// =====================================
+
+function continueToMode() {
+
+
+    const company =
+        document.getElementById("company").value;
+
+
+    const role =
+        document.getElementById("role").value;
+
+
+    const message =
+        document.getElementById("companyMessage");
+
+
+
+    if (company === "") {
+
+        message.textContent =
+            "Please select a company.";
+
+        message.className =
+            "message error";
+
+        return;
+
+    }
+
+
+
+    if (role === "") {
+
+        message.textContent =
+            "Please select a job role.";
+
+        message.className =
+            "message error";
+
+        return;
+
+    }
+
+
+
+    localStorage.setItem(
+        "selectedCompany",
+        company
+    );
+
+
+    localStorage.setItem(
+        "selectedRole",
+        role
+    );
+
+
+
+    window.location.href =
+        "interview.html";
+
+}
+
+
+
+// =====================================
+// LOAD INTERVIEW HISTORY
+// =====================================
+
+function loadInterviewHistory() {
+
+
+    const historyList =
+        document.getElementById("historyList");
+
+
+    const history =
+        JSON.parse(
+            localStorage.getItem("interviewHistory")
+        ) || [];
+
+
+
+    if (history.length === 0) {
+
+        historyList.innerHTML = `
+            <p class="no-history">
+                No previous interviews yet.
+            </p>
+        `;
+
+        return;
+
+    }
+
+
+
+    historyList.innerHTML = "";
+
+
+
+    history.forEach(function(interview) {
+
+
+        const item =
+            document.createElement("div");
+
+
+        item.className =
+            "history-item";
+
+
+
+        item.innerHTML = `
+
+            <h3>
+                ${interview.company}
+            </h3>
+
+            <p>
+                💼 ${interview.role}
+            </p>
+
+            <p>
+                🎯 ${interview.mode}
+            </p>
+
+            <p class="score">
+                Overall Score: ${interview.overallScore}%
+            </p>
+
+            <p>
+                🧮 Aptitude:
+                ${interview.aptitudeScore}/${interview.aptitudeTotal}
+            </p>
+
+            <p>
+                💻 Technical:
+                ${interview.technicalScore}/${interview.technicalTotal}
+            </p>
+
+            <p>
+                👨‍💻 Coding:
+                ${interview.codingScore}%
+            </p>
+
+            <p>
+                📝 Attempted:
+                ${interview.attempted}
+            </p>
+
+            <p>
+                📅 ${interview.date}
+            </p>
+
+        `;
+
+
+
+        historyList.appendChild(item);
+
+    });
+
+}
+
+
+
+// =====================================
+// LOAD HISTORY WHEN DASHBOARD OPENS
+// =====================================
+
+loadInterviewHistory();
+
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>HireSim - Aptitude Round</title>
+
+    <link rel="stylesheet"
+        href="aptitude.css">
+
+</head>
+
+
+<body>
+
+
+    <div class="aptitude-page">
+
+
+        <!-- Top Bar -->
+
+        <div class="top-bar">
+
+            <div class="logo">
+                HireSim
+            </div>
+
+            <div class="round-info">
+                Aptitude Round
+            </div>
+
+        </div>
+
+
+
+        <!-- Progress -->
+
+        <div class="progress-section">
+
+            <div class="progress-text">
+
+                <span>
+                    Question
+                    <strong id="questionNumber">1</strong>
+                    of
+                    <strong id="totalQuestions">0</strong>
+                </span>
+
+                <span>
+                    Aptitude
+                </span>
+
+            </div>
+
+
+            <div class="progress-bar">
+
+                <div id="progress"></div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Timer -->
+
+        <div class="timer-box">
+
+            ⏱️ Time Left:
+            <strong id="timer">
+                30:00
+            </strong>
+
+        </div>
+
+
+
+        <!-- Question Card -->
+
+        <div class="question-card">
+
+
+            <div class="question-label">
+                Aptitude Question
+            </div>
+
+
+            <h1 id="question">
+                Loading questions...
+            </h1>
+
+
+
+            <!-- Options -->
+
+            <div class="options">
+
+
+                <button
+                    class="option"
+                    onclick="selectOption(0)"
+                >
+                    Option A
+                </button>
+
+
+                <button
+                    class="option"
+                    onclick="selectOption(1)"
+                >
+                    Option B
+                </button>
+
+
+                <button
+                    class="option"
+                    onclick="selectOption(2)"
+                >
+                    Option C
+                </button>
+
+
+                <button
+                    class="option"
+                    onclick="selectOption(3)"
+                >
+                    Option D
+                </button>
+
+
+            </div>
+
+
+
+            <!-- Navigation -->
+
+            <div class="navigation-buttons">
+
+                <button
+                    id="previousButton"
+                    onclick="previousQuestion()"
+                    disabled
+                >
+                    ← Previous
+                </button>
+
+
+                <button
+                    id="nextButton"
+                    onclick="nextQuestion()"
+                    disabled
+                >
+                    Next Question →
+                </button>
+
+            </div>
+
+
+            <p id="message"></p>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <script>
+
+
+        /*
+         * Backend API
+         */
+
+        const API_URL = "http://localhost:8080/questions/aptitude";
+
+
+        /*
+         * Questions loaded from database
+         */
+
+        let questions = [];
+
+
+        /*
+         * Variables
+         */
+
+        let currentQuestion = 0;
+
+        let totalSeconds = 30 * 60;
+
+        let timer = null;
+
+        let answers = [];
+
+        let submitted = false;
+
+
+
+        /*
+         * Elements
+         */
+
+        const question =
+            document.getElementById("question");
+
+        const questionNumber =
+            document.getElementById("questionNumber");
+
+        const totalQuestions =
+            document.getElementById("totalQuestions");
+
+        const progress =
+            document.getElementById("progress");
+
+        const nextButton =
+            document.getElementById("nextButton");
+
+        const previousButton =
+            document.getElementById("previousButton");
+
+        const timerElement =
+            document.getElementById("timer");
+
+        const message =
+            document.getElementById("message");
+
+
+
+        /*
+         * Load Questions From Database
+         */
+
+        async function loadQuestions() {
+
+            try {
+
+                message.textContent =
+                    "Loading questions...";
+
+
+                const response =
+                    await fetch(API_URL);
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Unable to fetch questions"
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                /*
+                 * Check database questions
+                 */
+
+                if (
+                    !Array.isArray(data) ||
+                    data.length === 0
+                ) {
+
+                    throw new Error(
+                        "No questions available"
+                    );
+
+                }
+
+
+                /*
+                 * Convert API data into
+                 * frontend question format
+                 */
+
+                questions = data.map(function(item) {
+
+                    let correctIndex = -1;
+
+
+                    if (
+                        item.correctAnswer === "A"
+                    ) {
+
+                        correctIndex = 0;
+
+                    } else if (
+                        item.correctAnswer === "B"
+                    ) {
+
+                        correctIndex = 1;
+
+                    } else if (
+                        item.correctAnswer === "C"
+                    ) {
+
+                        correctIndex = 2;
+
+                    } else if (
+                        item.correctAnswer === "D"
+                    ) {
+
+                        correctIndex = 3;
+
+                    }
+
+
+                    return {
+
+                        id: item.id,
+
+                        question:
+                            item.questionText,
+
+                        options: [
+                            item.optionA,
+                            item.optionB,
+                            item.optionC,
+                            item.optionD
+                        ],
+
+                        answer:
+                            correctIndex,
+
+                        category:
+                            item.category,
+
+                        difficulty:
+                            item.difficulty,
+
+                        source:
+                            item.source
+
+                    };
+
+                });
+
+
+                /*
+                 * Shuffle questions
+                 */
+
+                questions =
+                    shuffleArray(questions);
+
+
+                /*
+                 * Currently database has 5.
+                 *
+                 * Later when we have 25+
+                 * questions, take 25.
+                 */
+
+                if (questions.length > 25) {
+
+                    questions =
+                        questions.slice(0, 25);
+
+                }
+
+
+                /*
+                 * Create answer storage
+                 */
+
+                answers =
+                    new Array(
+                        questions.length
+                    ).fill(null);
+
+
+                /*
+                 * Update total questions
+                 */
+
+                totalQuestions.textContent =
+                    questions.length;
+
+
+                message.textContent = "";
+
+
+                /*
+                 * Load first question
+                 */
+
+                loadQuestion();
+
+
+                /*
+                 * Start timer
+                 */
+
+                startTimer();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+
+                question.textContent =
+                    "Unable to load questions.";
+
+
+                message.textContent =
+                    "Please make sure the backend is running.";
+
+
+                message.style.color =
+                    "red";
+
+
+            }
+
+        }
+
+
+
+        /*
+         * Shuffle Array
+         */
+
+        function shuffleArray(array) {
+
+            const shuffled =
+                [...array];
+
+
+            for (
+                let i = shuffled.length - 1;
+                i > 0;
+                i--
+            ) {
+
+                const j =
+                    Math.floor(
+                        Math.random() * (i + 1)
+                    );
+
+
+                [
+                    shuffled[i],
+                    shuffled[j]
+                ] =
+                [
+                    shuffled[j],
+                    shuffled[i]
+                ];
+
+            }
+
+
+            return shuffled;
+
+        }
+
+
+
+        /*
+         * Load Current Question
+         */
+
+        function loadQuestion() {
+
+            if (questions.length === 0) {
+
+                return;
+
+            }
+
+
+            const current =
+                questions[currentQuestion];
+
+
+            /*
+             * Question text
+             */
+
+            question.textContent =
+                current.question;
+
+
+            /*
+             * Question number
+             */
+
+            questionNumber.textContent =
+                currentQuestion + 1;
+
+
+            /*
+             * Progress bar
+             */
+
+            progress.style.width =
+                (
+                    (currentQuestion + 1) /
+                    questions.length *
+                    100
+                ) + "%";
+
+
+            /*
+             * Options
+             */
+
+            const options =
+                document.querySelectorAll(".option");
+
+
+            options.forEach(
+                function(option, index) {
+
+                    option.textContent =
+                        current.options[index];
+
+
+                    option.classList.remove(
+                        "selected"
+                    );
+
+                }
+            );
+
+
+            /*
+             * Restore previous answer
+             */
+
+            if (
+                answers[currentQuestion] !== null
+            ) {
+
+                options[
+                    answers[currentQuestion]
+                ].classList.add(
+                    "selected"
+                );
+
+            }
+
+
+            /*
+             * Previous button
+             */
+
+            previousButton.disabled =
+                currentQuestion === 0;
+
+
+            /*
+             * Next button
+             */
+
+            if (
+                currentQuestion ===
+                questions.length - 1
+            ) {
+
+                nextButton.textContent =
+                    "Submit Test ✓";
+
+            } else {
+
+                nextButton.textContent =
+                    "Next Question →";
+
+            }
+
+
+            /*
+             * Enable button
+             */
+
+            nextButton.disabled = false;
+
+        }
+
+
+
+        /*
+         * Select Answer
+         */
+
+        function selectOption(index) {
+
+            if (submitted) {
+
+                return;
+
+            }
+
+
+            answers[currentQuestion] =
+                index;
+
+
+            const options =
+                document.querySelectorAll(".option");
+
+
+            options.forEach(
+                function(option) {
+
+                    option.classList.remove(
+                        "selected"
+                    );
+
+                }
+            );
+
+
+            options[index].classList.add(
+                "selected"
+            );
+
+        }
+
+
+
+        /*
+         * Previous Question
+         */
+
+        function previousQuestion() {
+
+            if (
+                currentQuestion > 0 &&
+                !submitted
+            ) {
+
+                currentQuestion--;
+
+                loadQuestion();
+
+            }
+
+        }
+
+
+
+        /*
+         * Next Question
+         */
+
+        function nextQuestion() {
+
+            if (submitted) {
+
+                return;
+
+            }
+
+
+            /*
+             * Last question
+             */
+
+            if (
+                currentQuestion ===
+                questions.length - 1
+            ) {
+
+                finishAptitude();
+
+                return;
+
+            }
+
+
+            currentQuestion++;
+
+            loadQuestion();
+
+        }
+
+
+
+        /*
+         * Timer
+         */
+
+        function startTimer() {
+
+            timer =
+                setInterval(
+                    function() {
+
+                        totalSeconds--;
+
+
+                        const minutes =
+                            Math.floor(
+                                totalSeconds / 60
+                            );
+
+
+                        const seconds =
+                            totalSeconds % 60;
+
+
+                        timerElement.textContent =
+                            String(minutes)
+                                .padStart(2, "0")
+                            + ":"
+                            + String(seconds)
+                                .padStart(2, "0");
+
+
+                        /*
+                         * Time Over
+                         */
+
+                        if (
+                            totalSeconds <= 0
+                        ) {
+
+                            clearInterval(timer);
+
+                            finishAptitude();
+
+                        }
+
+                    },
+                    1000
+                );
+
+        }
+
+
+
+        /*
+         * Finish Aptitude
+         */
+
+        function finishAptitude() {
+
+            if (submitted) {
+
+                return;
+
+            }
+
+
+            submitted = true;
+
+
+            clearInterval(timer);
+
+
+            /*
+             * Calculate Result
+             */
+
+            let correct = 0;
+
+            let wrong = 0;
+
+            let notAttempted = 0;
+
+
+            answers.forEach(
+                function(answer, index) {
+
+                    if (answer === null) {
+
+                        notAttempted++;
+
+                    } else if (
+                        answer ===
+                        questions[index].answer
+                    ) {
+
+                        correct++;
+
+                    } else {
+
+                        wrong++;
+
+                    }
+
+                }
+            );
+
+
+            /*
+             * Save Result
+             */
+
+            localStorage.setItem(
+                "aptitudeScore",
+                correct
+            );
+
+
+            localStorage.setItem(
+                "aptitudeTotal",
+                questions.length
+            );
+
+
+            localStorage.setItem(
+                "aptitudeCorrect",
+                correct
+            );
+
+
+            localStorage.setItem(
+                "aptitudeWrong",
+                wrong
+            );
+
+
+            localStorage.setItem(
+                "aptitudeNotAttempted",
+                notAttempted
+            );
+
+
+            /*
+             * Result Page
+             */
+
+            document.querySelector(
+                ".question-card"
+            ).innerHTML = `
+
+                <div class="result-icon">
+                    🎉
+                </div>
+
+                <h1>
+                    Aptitude Round Completed!
+                </h1>
+
+                <p class="result-text">
+                    Your Result
+                </p>
+
+                <div class="score">
+                    ${correct} / ${questions.length}
+                </div>
+
+                <p>
+                    Correct: ${correct}
+                </p>
+
+                <p>
+                    Wrong: ${wrong}
+                </p>
+
+                <p>
+                    Not Attempted: ${notAttempted}
+                </p>
+
+                <button
+                    onclick="goToTechnical()"
+                >
+                    Continue to Technical Round →
+                </button>
+
+            `;
+
+        }
+
+
+
+        /*
+         * Go To Technical Round
+         */
+
+        function goToTechnical() {
+
+            window.location.href =
+                "technical.html";
+
+        }
+
+
+
+        /*
+         * Start Application
+         */
+
+        loadQuestions();
+
+
+    </script>
+
+
+</body>
+
+</html>

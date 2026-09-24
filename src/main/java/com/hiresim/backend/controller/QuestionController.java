@@ -17,7 +17,6 @@ public class QuestionController {
         this.questionRepository = questionRepository;
     }
 
-
     // =========================
     // ALL QUESTIONS
     // =========================
@@ -27,7 +26,6 @@ public class QuestionController {
         return questionRepository.findAll();
     }
 
-
     // =========================
     // APTITUDE QUESTIONS
     // =========================
@@ -35,9 +33,30 @@ public class QuestionController {
     @GetMapping("/aptitude")
     public List<Question> getAptitudeQuestions() {
 
-        return questionRepository.findByCategory("Quantitative");
-    }
+        List<Question> aptitudeQuestions = new ArrayList<>();
 
+        aptitudeQuestions.addAll(
+                questionRepository.findByCategory("Quantitative")
+        );
+
+        aptitudeQuestions.addAll(
+                questionRepository.findByCategory("Logical Reasoning")
+        );
+
+        aptitudeQuestions.addAll(
+                questionRepository.findByCategory("Verbal")
+        );
+
+        aptitudeQuestions.addAll(
+                questionRepository.findByCategory("Probability")
+        );
+
+        aptitudeQuestions.addAll(
+                questionRepository.findByCategory("Time and Work")
+        );
+
+        return aptitudeQuestions;
+    }
 
     // =========================
     // TECHNICAL QUESTIONS
@@ -46,8 +65,7 @@ public class QuestionController {
     @GetMapping("/technical")
     public List<Question> getTechnicalQuestions() {
 
-        List<Question> technicalQuestions =
-                new ArrayList<>();
+        List<Question> technicalQuestions = new ArrayList<>();
 
         technicalQuestions.addAll(
                 questionRepository.findByCategory("Java")
@@ -76,7 +94,6 @@ public class QuestionController {
         return technicalQuestions;
     }
 
-
     // =========================
     // CATEGORY
     // =========================
@@ -88,7 +105,6 @@ public class QuestionController {
         return questionRepository.findByCategory(category);
     }
 
-
     // =========================
     // DIFFICULTY
     // =========================
@@ -99,7 +115,6 @@ public class QuestionController {
 
         return questionRepository.findByDifficulty(difficulty);
     }
-
 
     // =========================
     // SOURCE
